@@ -4,6 +4,8 @@
  */
 package visuales;
 
+import base_de_datos.GestionBD;
+
 /**
  *
  * @author joan
@@ -45,6 +47,11 @@ public class Login extends javax.swing.JFrame {
         });
 
         CancelButton.setText("Cancelar");
+        CancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelButtonActionPerformed(evt);
+            }
+        });
 
         PassLabel.setText("Contrasenna");
 
@@ -56,14 +63,13 @@ public class Login extends javax.swing.JFrame {
                 .addGap(120, 120, 120)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(PasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(AceptButton)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                            .addComponent(CancelButton))
-                        .addComponent(UserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(userTextField)
-                        .addComponent(PassLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(AceptButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                        .addComponent(CancelButton))
+                    .addComponent(UserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(userTextField)
+                    .addComponent(PassLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(120, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -77,21 +83,33 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(PassLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(AceptButton)
                     .addComponent(CancelButton))
-                .addGap(80, 80, 80))
+                .addGap(50, 50, 50))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void AceptButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AceptButtonMouseClicked
-        String usseer =userTextField.getText();
+        String user =userTextField.getText();
         String pass = String.valueOf(PasswordField.getPassword());
         
+        if(GestionBD.verifyUsuario(user, pass)){
+            Estadisticas E = new Estadisticas();
+            E.setVisible(true);
+            dispose();
+        }
+        
     }//GEN-LAST:event_AceptButtonMouseClicked
+
+    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
+        Main M = new Main();
+        M.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CancelButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

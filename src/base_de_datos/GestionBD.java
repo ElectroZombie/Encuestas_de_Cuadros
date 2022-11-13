@@ -8,7 +8,7 @@ import modelos.Encuesta;
 import modelos.Departamento;
 
 import java.util.Vector;
-import modelos.Respuesta;
+import modelos.Usuario;
 
 
 /**
@@ -35,6 +35,14 @@ public class GestionBD {
 
     public static Departamento getDepartamento(int idDepartamento) {
         return Departamento.getDepartamento(idDepartamento);
+    }
+    
+    public static boolean verifyUsuario(String usuario, String password){
+        return Usuario.verifyUsuario(usuario, password);
+    }
+
+    public static Vector<int[]> getEstadisticasDepartamento(int ano) {
+        return Departamento.getEstadisticasDepartamento(ano);
     }
     
 } 

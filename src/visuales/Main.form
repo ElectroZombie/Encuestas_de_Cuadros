@@ -24,25 +24,14 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="Sesion" max="32767" attributes="0"/>
-                  </Group>
-                  <Component id="LoginButton" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <Component id="LoginButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
               <Component id="EncuestasButton" min="-2" pref="249" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="AdminButton" max="32767" attributes="0"/>
-                  <Component id="jLabel1" max="32767" attributes="0"/>
-                  <Component id="AdminButton1" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace pref="150" max="32767" attributes="0"/>
+              <EmptySpace pref="388" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -51,20 +40,9 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="LoginButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="Sesion" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="jLabel1" min="-2" pref="34" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="AdminButton1" min="-2" pref="35" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                      <Component id="AdminButton" min="-2" pref="35" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="EncuestasButton" min="-2" pref="110" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="224" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
+              <Component id="EncuestasButton" min="-2" pref="110" max="-2" attributes="0"/>
+              <EmptySpace pref="240" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -78,11 +56,6 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="EncuestasButtonMouseClicked"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="AdminButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Panel de administracion"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="LoginButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Iniciar Sesion"/>
@@ -90,21 +63,6 @@
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="LoginButtonMouseClicked"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="Sesion">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Sesion no iniciada:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Panel de administracion"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="AdminButton1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Panel de administracion"/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

@@ -34,7 +34,7 @@ public class Conexion{
         
         
        
- ruta = System.getProperty("user.dir")+System.getProperty("file.separator")+"EncuestasDB.db";    
+ ruta = System.getProperty("user.dir")+System.getProperty("file.separator")+"database"+System.getProperty("file.separator")+"EncuestasDB.db";    
     ///RUTA PARA EL JAR SI NO NO CORRE
    //ruta = "..\\Elecciones_db.db";
         
