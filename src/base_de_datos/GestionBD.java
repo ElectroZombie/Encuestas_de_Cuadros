@@ -45,4 +45,8 @@ public class GestionBD {
         return Departamento.getEstadisticasDepartamento(ano);
     }
     
+    public static Encuesta getEncuestaSecundaria(Encuesta e){
+        return e.getEncuestaSec();
+    }
+    
 } 

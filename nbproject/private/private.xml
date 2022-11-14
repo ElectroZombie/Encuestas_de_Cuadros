@@ -3,15 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/modelos/Usuario.java</file>
-            <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/modelos/Respuesta.java</file>
-            <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/modelos/Encuesta.java</file>
-            <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/base_de_datos/Conexion.java</file>
-            <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/visuales/Main.java</file>
-            <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/visuales/Login.java</file>
-            <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/base_de_datos/GestionBD.java</file>
-            <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/visuales/Estadisticas.java</file>
-            <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/modelos/Departamento.java</file>
+            <file>file:/home/joan/NetBeansProjects/Encuestas_de_Cuadros/src/modelos/Encuesta.java</file>
+            <file>file:/home/joan/NetBeansProjects/Encuestas_de_Cuadros/src/visuales/Seleccion_de_departamento.java</file>
+            <file>file:/home/joan/NetBeansProjects/Encuestas_de_Cuadros/src/modelos/Departamento.java</file>
+            <file>file:/home/joan/NetBeansProjects/Encuestas_de_Cuadros/src/visuales/EncuestaBuilder.java</file>
+            <file>file:/home/joan/NetBeansProjects/Encuestas_de_Cuadros/src/visuales/Main.java</file>
+            <file>file:/home/joan/NetBeansProjects/Encuestas_de_Cuadros/src/visuales/Estadisticas.java</file>
+            <file>file:/home/joan/NetBeansProjects/Encuestas_de_Cuadros/src/base_de_datos/GestionBD.java</file>
+            <file>file:/home/joan/NetBeansProjects/Encuestas_de_Cuadros/src/visuales/ComenzarEncuesta.java</file>
         </group>
     </open-files>
 </project-private>
