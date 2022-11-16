@@ -5,6 +5,7 @@
 package visuales;
 
 import base_de_datos.GestionBD;
+import dialogs.*;
 import modelos.Departamento;
 import modelos.Encuesta;
 import modelos.Respuesta;
@@ -13,7 +14,7 @@ import modelos.Respuesta;
  *
  * @author joan
  */
-public class EncuestaBuilder extends javax.swing.JFrame {
+public class EncuestaBuilder extends javax.swing.JFrame{
 
     /**
      * Creates new form EncuestaBuilder
@@ -21,20 +22,20 @@ public class EncuestaBuilder extends javax.swing.JFrame {
     private Encuesta e;
     Departamento d;
     private int preguntaIndex;
+    private Encuesta principal;
+    private boolean flag;
 
     public EncuestaBuilder(Encuesta e, Departamento d) {
         initComponents();
         this.e = e;
         this.d = d;
         preguntaIndex = 0;
+        principal = null;
+        flag = false;
         buttonGroup1.add(SiRadioButton);
         buttonGroup1.add(NoRadioButton);
         buttonGroup1.add(EnOcacionesRadioButton);
-        PregutaEditorPane.setText(e.getPreguntas().elementAt(preguntaIndex).getPregunta());
-        PregutaEditorPane.setEditable(false);
-        JustificacionEditorPane.setEditable(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
-    
-        numeroPregunta.setText((preguntaIndex+1) +  "/" + e.getPreguntas().size());
+        inciarVicual();
     }
 
     /**
@@ -164,57 +165,74 @@ public class EncuestaBuilder extends javax.swing.JFrame {
         if (preguntaIndex != 0 && preguntaIndex > 0) {
             preguntaIndex--;
             PregutaEditorPane.setText(e.getPreguntas().elementAt(preguntaIndex).getPregunta());
-            
+
             int seleccion = e.getRespuestas().elementAt(preguntaIndex).getSeleccion();
-            if(seleccion==0){
-                SiRadioButton.setSelected(true);
+            switch (seleccion) {
+                case 0:
+                    SiRadioButton.setSelected(true);
+                    break;
+                case 1:
+                    NoRadioButton.setSelected(true);
+                    break;
+                default:
+                    EnOcacionesRadioButton.setSelected(true);
+                    break;
             }
-            else if(seleccion == 1){
-                NoRadioButton.setSelected(true);
-            }
-            else{
-                EnOcacionesRadioButton.setSelected(true);
-            }
-            
+
             JustificacionEditorPane.setText(e.getRespuestas().elementAt(preguntaIndex).getArgumentacion());
-            
+
             JustificacionEditorPane.setEditable(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
-        
-        numeroPregunta.setText((preguntaIndex+1) +  "/" + e.getPreguntas().size());
+
+            numeroPregunta.setText((preguntaIndex + 1) + "/" + e.getPreguntas().size());
         }
     }//GEN-LAST:event_BackButtonMouseClicked
 
     private void NextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NextButtonMouseClicked
-        
-        if(e.getPreguntas().size()-1 == preguntaIndex){
-            GestionBD.setEncuestaResuelta(e, d);
+
+        if (e.getPreguntas().size() == preguntaIndex) {
+            if (flag) {
+                
+                GestionBD.setEncuestaResuelta(principal, d);
+                GestionBD.setEncuestaResuelta(e, d);
+            } else {
+                flag = true;
+                principal = e;
+                e = GestionBD.getEncuestaSecundaria(principal);
+                preguntaIndex = 0;
+                inciarVicual();
+                buttonGroup1.clearSelection();
+                JustificacionEditorPane.setText("");
+            }
         }
-        if (e.getPreguntas().size()-1 > preguntaIndex) {
-            preguntaIndex++;
+        if (e.getPreguntas().size() > preguntaIndex) {
             
-            int seleccion;
-            if (SiRadioButton.isSelected()){
+            int seleccion = -1;
+            if (SiRadioButton.isSelected()) {
                 seleccion = 0;
-            }
-            else if (NoRadioButton.isSelected()){
+            } else if (NoRadioButton.isSelected()) {
                 seleccion = 1;
-            }
-            else{
+            } else if (EnOcacionesRadioButton.isSelected()){
                 seleccion = 2;
             }
             
+            if(seleccion==-1){
+                return; 
+            }
+
             buttonGroup1.clearSelection();
             JustificacionEditorPane.setText("");
-            
+
             e.setRespuesta(new Respuesta(seleccion, preguntaIndex));
-            if(JustificacionEditorPane.isEditable()){
-            e.getRespuestas().elementAt(preguntaIndex).setArgumentacion(JustificacionEditorPane.getText());
+            if (JustificacionEditorPane.isEditable()) {
+                e.getRespuestas().elementAt(preguntaIndex).setArgumentacion(JustificacionEditorPane.getText());
             }
-            
+
             PregutaEditorPane.setText(e.getPreguntas().elementAt(preguntaIndex).getPregunta());
             JustificacionEditorPane.setEditable(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
-        
-        numeroPregunta.setText((preguntaIndex+1) +  "/" + e.getPreguntas().size());
+
+            numeroPregunta.setText((preguntaIndex + 1) + "/" + e.getPreguntas().size());
+            
+            preguntaIndex++;
         }
 
     }//GEN-LAST:event_NextButtonMouseClicked
@@ -239,4 +257,13 @@ public class EncuestaBuilder extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel numeroPregunta;
     // End of variables declaration//GEN-END:variables
+
+    private void inciarVicual() {
+        PregutaEditorPane.setText(e.getPreguntas().elementAt(preguntaIndex).getPregunta());
+        PregutaEditorPane.setEditable(false);
+        JustificacionEditorPane.setEditable(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
+
+        numeroPregunta.setText((preguntaIndex + 1) + "/" + e.getPreguntas().size());
+        PreguntaLabel.setText(e.getObjEncuesta());
+    }
 }
