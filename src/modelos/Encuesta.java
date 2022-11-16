@@ -137,6 +137,29 @@ public class Encuesta {
             Logger.getLogger(GestionBD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static Vector<Integer> getAnnosEncuestas(){
+        Conexion C = new Conexion();
+        
+        Vector<Integer> annos = new Vector<>();
+        
+        try {
+            C.conectar();
+            
+            String stat = "select distinct ano_encuesta from trabajadores_x_departamento order by ano_encuesta asc";
+            ResultSet RS = C.getConsulta().executeQuery(stat);
+            
+            if(RS.next()){
+                do{
+                    annos.add(RS.getInt("ano_encuesta"));
+                }while(RS.next());
+            }
+            
+            C.desconectar();
+        } catch (SQLException e) {
+        }
+        return annos;
+    }
 
     
 }

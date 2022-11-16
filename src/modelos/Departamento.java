@@ -128,4 +128,18 @@ public class Departamento {
         }
         return estXdep;
     }
+    
+     public static void actualizarTotalTrabajadores(String departamento, int anno, int nuevoTotal) {
+         Conexion C = new Conexion();
+         
+         try {
+             C.conectar();
+             
+             String stat = "update trabajadores_x_departamento join departamento on trabajadores.id_departamento = departamento.id_departamento set cantidad_trabajadores = " + nuevoTotal + " where departamento.nombre_departamento = '" + departamento + "' and ano_departamento = " + anno;
+             C.getConsulta().execute(stat);
+             
+             C.desconectar();
+         } catch (SQLException e) {
+         }
+     }
 }
