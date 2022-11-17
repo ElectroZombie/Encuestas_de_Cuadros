@@ -9,8 +9,11 @@ import dialogs.AbstractFrame;
 import dialogs.InputDialog;
 import dialogs.MessageDialog;
 import java.awt.Font;
+import java.io.File;
 import java.util.Vector;
+import javax.swing.JFileChooser;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -48,12 +51,25 @@ public class Estadisticas extends AbstractFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        SeleccionarBD = new javax.swing.JFileChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaEstadisticas = new javax.swing.JTable();
         salirBoton = new javax.swing.JButton();
         actualizarTotal = new javax.swing.JButton();
         mostrarDatos = new javax.swing.JButton();
         annos = new javax.swing.JComboBox<>();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        selectBD = new javax.swing.JMenuItem();
+
+        SeleccionarBD.setAcceptAllFileFilterUsed(false);
+        SeleccionarBD.setAccessory(selectBD);
+        SeleccionarBD.setBackground(java.awt.Color.darkGray);
+        SeleccionarBD.setDialogTitle("Seleccionar Base de Datos");
+        SeleccionarBD.setForeground(java.awt.Color.black);
+        SeleccionarBD.setToolTipText("");
+        SeleccionarBD.setDragEnabled(true);
+        SeleccionarBD.setName(""); // NOI18N
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,23 +117,41 @@ public class Estadisticas extends AbstractFrame {
             }
         });
 
+        jMenuBar1.setMaximumSize(new java.awt.Dimension(60, 21));
+        jMenuBar1.setMinimumSize(new java.awt.Dimension(60, 21));
+        jMenuBar1.setPreferredSize(new java.awt.Dimension(60, 21));
+
+        jMenu1.setText("Integrar Base de Datos");
+
+        selectBD.setText("Seleccionar Base de Datos");
+        selectBD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectBDActionPerformed(evt);
+            }
+        });
+        jMenu1.add(selectBD);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(actualizarTotal)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(mostrarDatos)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(annos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(salirBoton)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,11 +160,11 @@ public class Estadisticas extends AbstractFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(actualizarTotal)
                     .addComponent(mostrarDatos)
-                    .addComponent(salirBoton)
-                    .addComponent(annos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(annos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(salirBoton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
@@ -175,16 +209,39 @@ public class Estadisticas extends AbstractFrame {
         
     }//GEN-LAST:event_salirBotonActionPerformed
 
+    private void selectBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectBDActionPerformed
+       
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.db", "db");
+        
+        SeleccionarBD.setFileFilter(filtro);
+        int seleccion = SeleccionarBD.showOpenDialog(this);
+        
+        if(seleccion == JFileChooser.APPROVE_OPTION){
+            File file = SeleccionarBD.getSelectedFile();
+            
+            String direccion = file.getAbsolutePath();
+            
+            GestionBD.integrateDatabase(direccion);
+            Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamento(Integer.parseInt(annos.getSelectedItem()+""));        
+            actualizarTablaEstadisticas(estadisticas);
+        }
+       
+    }//GEN-LAST:event_selectBDActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFileChooser SeleccionarBD;
     private javax.swing.JButton actualizarTotal;
     private javax.swing.JComboBox<String> annos;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton mostrarDatos;
     private javax.swing.JButton salirBoton;
+    private javax.swing.JMenuItem selectBD;
     private javax.swing.JTable tablaEstadisticas;
     // End of variables declaration//GEN-END:variables
 

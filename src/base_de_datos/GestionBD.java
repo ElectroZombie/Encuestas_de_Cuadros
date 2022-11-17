@@ -58,5 +58,9 @@ public class GestionBD {
         return e.getEncuestaSec();
 
     }
+
+    public static void integrateDatabase(String direccion) {
+        
+    }
     
 } 

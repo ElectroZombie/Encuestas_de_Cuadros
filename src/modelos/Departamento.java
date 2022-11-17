@@ -8,7 +8,6 @@ import base_de_datos.Conexion;
 import base_de_datos.GestionBD;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Stack;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
