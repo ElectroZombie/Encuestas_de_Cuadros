@@ -24,22 +24,22 @@ public class Conexion{
 
 	Statement consulta;
 	public String ruta;
-        URL url;
 
 
     
     public Conexion()
     {
         
-        
-        
-       
  ruta = System.getProperty("user.dir")+System.getProperty("file.separator")+"database"+System.getProperty("file.separator")+"EncuestasDB.db";    
     ///RUTA PARA EL JAR SI NO NO CORRE
    //ruta = "..\\Elecciones_db.db";
         
-   
     }
+    
+    public Conexion(String ruta){
+        this.ruta = ruta;
+    }
+    
      public Connection conectar(){
 		try {
 	            Class.forName("org.sqlite.JDBC");

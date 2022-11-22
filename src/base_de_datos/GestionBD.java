@@ -46,8 +46,22 @@ public class GestionBD {
         return Departamento.getEstadisticasDepartamento(ano);
     }
     
+
+    public static Vector<Integer> getAnnosEncuestas(){
+        return Encuesta.getAnnosEncuestas();
+    }
+
+    public static void actualizarTotalTrabajadores(String departamento, int anno, int nuevoTotal) {
+        Departamento.actualizarTotalTrabajadores(departamento, anno, nuevoTotal);
+    }
+
     public static Encuesta getEncuestaSecundaria(Encuesta e){
         return e.getEncuestaSec();
+
+    }
+
+    public static void integrateDatabase(String direccion) {
+        
     }
 
     public static int getEncuestasRealizadas() {

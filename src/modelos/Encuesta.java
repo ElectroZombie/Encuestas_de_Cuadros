@@ -8,9 +8,7 @@ import base_de_datos.Conexion;
 import base_de_datos.GestionBD;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -181,6 +179,29 @@ public class Encuesta {
         }
     }
     
+    public static Vector<Integer> getAnnosEncuestas(){
+        Conexion C = new Conexion();
+        
+        Vector<Integer> annos = new Vector<>();
+        
+        try {
+            C.conectar();
+            
+            String stat = "select distinct ano_encuesta from trabajadores_x_departamento order by ano_encuesta asc";
+            ResultSet RS = C.getConsulta().executeQuery(stat);
+            
+            if(RS.next()){
+                do{
+                    annos.add(RS.getInt("ano_encuesta"));
+                }while(RS.next());
+            }
+            
+            C.desconectar();
+        } catch (SQLException e) {
+        }
+        return annos;
+    }
+
     public Encuesta getEncuestaSec(){
         Conexion c= new Conexion();
         int id_encuesta = 0;
