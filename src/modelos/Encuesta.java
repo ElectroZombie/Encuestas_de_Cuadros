@@ -20,6 +20,7 @@ import java.util.logging.Logger;
  * @author joan
  */
 public class Encuesta {
+
     private Vector<Pregunta> preguntas;
     private final Vector<Respuesta> respuestas;
     private final String nombreEncuesta;
@@ -128,20 +129,36 @@ public class Encuesta {
         try {
             C.conectar();
             
-            String stat = "select * from trabajadores_x_departamento where ano_encuesta = " + LocalDate.now().getYear();
-            ResultSet RS = C.getConsulta().executeQuery(stat);
+            String stat = "";
+            ResultSet RS;
+            
+            if(!this.nombreEncuesta.contains("(Secundaria)")){
+            
+            stat = "select * from trabajadores_x_departamento where ano_encuesta = " + LocalDate.now().getYear() + " and id_departamento = " + D.getIdDepartamento();
+            RS = C.getConsulta().executeQuery(stat);
             
             if(RS.next()){
                 
                 int cant_enc = RS.getInt("cantidad_encuestados");
+                int cant_trab = RS.getInt("cantidad_trabajadores");
                 int ano = RS.getInt("ano_encuesta");
                 int idD = RS.getInt("id_departamento");
+                cant_enc++;
+                if(cant_enc < cant_trab){
                 stat = "update trabajadores_x_departamento set cantidad_encuestados = " + cant_enc + " where ano_encuesta = " + ano + " and id_departamento = " + idD;
                 C.getConsulta().execute(stat);
+                }
+                else{
+                stat = "update trabajadores_x_departamento set cantidad_encuestados = " + cant_enc + ", cantidad_trabajadores = " + cant_enc + " where ano_encuesta = " + ano + " and id_departamento = " + idD;
+                C.getConsulta().execute(stat);
+                    
+                }
             }
             else{
-                stat = "insert into trabajadores_x_departamento values(" + D.getIdDepartamento() + ", 1, 0, " + LocalDate.now().getYear()+ ")";
+                stat = "insert into trabajadores_x_departamento values(" + D.getIdDepartamento() + ", 1, 1, " + LocalDate.now().getYear()+ ")";
                 C.getConsulta().execute(stat);
+            }
+            
             }
             
             
@@ -166,16 +183,53 @@ public class Encuesta {
     
     public Encuesta getEncuestaSec(){
         Conexion c= new Conexion();
+        int id_encuesta = 0;
         try {
             c.conectar();
             String stat ="select id_encuesta from encuesta where nombre_encuesta ='"+this.nombreEncuesta+" (Secundaria)'";
             ResultSet rs = c.getConsulta().executeQuery(stat);
-            int id_encuesta= rs.getInt(0);
+            id_encuesta= rs.getInt(1);
             c.desconectar();
             
         } catch (Exception e) {
         }
-        return getEncuesta(idEncuesta);
+        return getEncuesta(id_encuesta);
+    }
+    
+      public static int getEncuestasRealizadas() {
+          Conexion C = new Conexion();
+          int cont = 0;
+          try {
+              C.conectar();
+              
+              String stat = "select count(id_encuesta_resuelta) from encuesta_resuelta where ano_encuesta = " + LocalDate.now().getYear();
+              ResultSet RS = C.getConsulta().executeQuery(stat);
+              
+              if(RS.next()){
+                  cont = RS.getInt(1);
+              }
+              C.desconectar();
+          } catch (Exception e) {
+          }
+          return cont;
+    }
+
+    public static int getEncuestasRealizadas(int idD) {
+        Conexion C = new Conexion();
+          int cont = 0;
+          try {
+              C.conectar();
+              
+              String stat = "select count(id_encuesta_resuelta) from encuesta_resuelta where ano_encuesta = " + LocalDate.now().getYear() + " and id_departamento = " + idD;
+              ResultSet RS = C.getConsulta().executeQuery(stat);
+              
+              if(RS.next()){
+                  cont = RS.getInt(1);
+              }
+              C.desconectar();
+          } catch (Exception e) {
+          }
+          return cont;
     }
 
     

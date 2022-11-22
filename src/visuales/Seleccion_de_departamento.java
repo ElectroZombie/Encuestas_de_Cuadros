@@ -26,6 +26,9 @@ public class Seleccion_de_departamento extends javax.swing.JFrame {
         for (String departamento : departamentos) {
             DepartamentoComboBox.addItem(departamento);
         }
+        
+        encRealText.setText(GestionBD.getEncuestasRealizadas()+"");
+        encRealDelText.setText(GestionBD.getEncuestasRealizadasDep(DepartamentoComboBox.getSelectedIndex())+"");
     }
 
     /**
@@ -41,12 +44,22 @@ public class Seleccion_de_departamento extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         CancelButton = new javax.swing.JButton();
         AceptButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        encuestasRealizadas = new javax.swing.JLabel();
+        encRealText = new javax.swing.JLabel();
+        encuestasRealizadasDep = new javax.swing.JLabel();
+        encRealDelText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        DepartamentoComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                DepartamentoComboBoxPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
 
         jLabel1.setText("Seleccione el departamento ha realizar la encuesta");
 
@@ -59,9 +72,9 @@ public class Seleccion_de_departamento extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Encuestas realizadas");
+        encuestasRealizadas.setText("Encuestas realizadas");
 
-        jLabel4.setText("Encuestas realizadas por departamento");
+        encuestasRealizadasDep.setText("Encuestas realizadas por departamento");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,13 +93,13 @@ public class Seleccion_de_departamento extends javax.swing.JFrame {
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(encuestasRealizadas)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(encRealText, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel4)
+                                .addComponent(encuestasRealizadasDep)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(encRealDelText, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(AceptButton, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -104,11 +117,11 @@ public class Seleccion_de_departamento extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(encuestasRealizadas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(encRealText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(encuestasRealizadasDep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(encRealDelText, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -131,6 +144,10 @@ public class Seleccion_de_departamento extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_AceptButtonMouseClicked
 
+    private void DepartamentoComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_DepartamentoComboBoxPopupMenuWillBecomeInvisible
+        encRealDelText.setText(GestionBD.getEncuestasRealizadasDep(DepartamentoComboBox.getSelectedIndex())+"");
+    }//GEN-LAST:event_DepartamentoComboBoxPopupMenuWillBecomeInvisible
+
     /**
      * @param args the command line arguments
      */
@@ -141,10 +158,10 @@ public class Seleccion_de_departamento extends javax.swing.JFrame {
     private javax.swing.JButton AceptButton;
     private javax.swing.JButton CancelButton;
     private javax.swing.JComboBox<String> DepartamentoComboBox;
+    private javax.swing.JLabel encRealDelText;
+    private javax.swing.JLabel encRealText;
+    private javax.swing.JLabel encuestasRealizadas;
+    private javax.swing.JLabel encuestasRealizadasDep;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     // End of variables declaration//GEN-END:variables
 }

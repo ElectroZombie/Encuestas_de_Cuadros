@@ -8,6 +8,7 @@ import modelos.Encuesta;
 import modelos.Departamento;
 
 import java.util.Vector;
+import javax.swing.JLabel;
 import modelos.Usuario;
 
 
@@ -47,6 +48,14 @@ public class GestionBD {
     
     public static Encuesta getEncuestaSecundaria(Encuesta e){
         return e.getEncuestaSec();
+    }
+
+    public static int getEncuestasRealizadas() {
+        return Encuesta.getEncuestasRealizadas();
+    }
+
+    public static int getEncuestasRealizadasDep(int idD) {
+        return Encuesta.getEncuestasRealizadas(idD);
     }
     
 } 
