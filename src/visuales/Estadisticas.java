@@ -34,7 +34,7 @@ public class Estadisticas extends AbstractFrame {
             annos.addItem(anno+"");
         }
         
-        Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamento(Integer.parseInt(annos.getSelectedItem()+""));        
+        Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamentosXAno(Integer.parseInt(annos.getSelectedItem()+""));        
         actualizarTablaEstadisticas(estadisticas);
     }
 
@@ -43,7 +43,7 @@ public class Estadisticas extends AbstractFrame {
        int nuevoTotal = Integer.parseInt(returnValue+"");
        
        GestionBD.actualizarTotalTrabajadores(tablaEstadisticas.getValueAt(tablaEstadisticas.getSelectedRow(), 0)+"", Integer.parseInt(annos.getSelectedItem()+""), nuevoTotal);
-       Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamento(Integer.parseInt(annos.getSelectedItem()+""));        
+       Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamentosXAno(Integer.parseInt(annos.getSelectedItem()+""));        
        actualizarTablaEstadisticas(estadisticas);
      }
   
@@ -172,7 +172,7 @@ public class Estadisticas extends AbstractFrame {
 
     private void annosPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_annosPopupMenuWillBecomeInvisible
         
-        Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamento(Integer.parseInt(annos.getSelectedItem()+""));        
+        Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamentosXAno(Integer.parseInt(annos.getSelectedItem()+""));        
         actualizarTablaEstadisticas(estadisticas);
         
     }//GEN-LAST:event_annosPopupMenuWillBecomeInvisible
@@ -222,7 +222,7 @@ public class Estadisticas extends AbstractFrame {
             String direccion = file.getAbsolutePath();
             
             GestionBD.integrateDatabase(direccion);
-            Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamento(Integer.parseInt(annos.getSelectedItem()+""));        
+            Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamentosXAno(Integer.parseInt(annos.getSelectedItem()+""));        
             actualizarTablaEstadisticas(estadisticas);
         }
        

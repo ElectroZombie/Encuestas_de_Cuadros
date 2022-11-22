@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utiles.Tupla;
 
 /**
  *
@@ -88,7 +89,7 @@ public class Departamento {
         return null;
     }
     
-    public static Vector<int[]> getEstadisticasDepartamento(int ano) {
+    public static Vector<int[]> getEstadisticasDepartamentosXAno(int ano) {
 
         Vector<int[]> estXdep = new Vector<>();
         
@@ -141,4 +142,58 @@ public class Departamento {
          } catch (SQLException e) {
          }
      }
+     
+      public static Vector<Tupla<Integer[], String[]>> getEstadisticasDepartamento(String nombreDepartamento, int anno) {
+          
+          Vector<Tupla<Integer[], String[]>> preguntas = new Vector<>();
+          
+          try {
+          int idD = getIdDepartamentoXNombre(nombreDepartamento);
+          if(idD==-1){
+            throw new SQLException();
+          }
+          
+          Conexion C = new Conexion();
+          C.conectar();
+          
+          String stat = "select * from trabajadores_x_departamento join encuesta_resuelta join preguntas_x_encuesta_resuelta on trabajadores_x_departamento.id_departamento = encuesta_resuelta.id_departamento and trabajadores_x_departamento.ano_encuesta = encuesta_resuelta.ano_encuesta and encuesta_resuelta.id_encuesta_resuelta = preguntas_x_encuesta_resuelta.id_encuesta_resuelta where trabajadores_x_departamento.ano_encuesta = " + anno + " and trabajadores_x_departamento.id_departamento = " + idD;
+          ResultSet RS = C.getConsulta().executeQuery(stat);
+          
+          if(RS.next()){
+              do{
+                  
+                  int cantTrabajadores = RS.getInt(2);
+                  int cantEncuestados = RS.getInt(3);
+                  int idPregunta = RS.getInt("id_pregunta");
+                  int seleccion = RS.getInt("seleccion_pregunta");
+                  String argumentacion = RS.getString("argumento_pregunta");
+                  
+                  
+              }while(RS.next());
+          }
+          
+          
+          C.desconectar();
+          } catch (SQLException ex) {
+                  Logger.getLogger(Departamento.class.getName()).log(Level.SEVERE, null, ex);
+              }
+          
+          return preguntas;
+      }
+      
+      public static int getIdDepartamentoXNombre(String nombreDepartamento){
+          Conexion C = new Conexion();
+          try {
+              C.conectar();
+              
+              String stat = "get id_departamento from departamento where nombre_departamento = '" + nombreDepartamento + "'";
+              ResultSet RS = C.getConsulta().executeQuery(stat);
+              int idD = RS.getInt("id_departamento");
+              
+              C.desconectar();
+              return idD;
+          } catch (Exception e) {
+          }
+          return -1;
+      }
 }

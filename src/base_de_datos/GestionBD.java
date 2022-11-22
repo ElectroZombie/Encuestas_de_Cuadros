@@ -10,6 +10,7 @@ import modelos.Departamento;
 import java.util.Vector;
 import javax.swing.JLabel;
 import modelos.Usuario;
+import utiles.Tupla;
 
 
 /**
@@ -42,8 +43,8 @@ public class GestionBD {
         return Usuario.verifyUsuario(usuario, password);
     }
 
-    public static Vector<int[]> getEstadisticasDepartamento(int ano) {
-        return Departamento.getEstadisticasDepartamento(ano);
+    public static Vector<int[]> getEstadisticasDepartamentosXAno(int ano) {
+        return Departamento.getEstadisticasDepartamentosXAno(ano);
     }
     
 
@@ -70,6 +71,10 @@ public class GestionBD {
 
     public static int getEncuestasRealizadasDep(int idD) {
         return Encuesta.getEncuestasRealizadas(idD);
+    }
+
+    public static Vector<Tupla<Integer[], String[]>> getEstadisticasDepartamento(String nombreDepartamento, int anno) {
+        return Departamento.getEstadisticasDepartamento(nombreDepartamento, anno);
     }
     
 } 
