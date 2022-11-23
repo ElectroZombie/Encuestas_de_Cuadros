@@ -63,7 +63,6 @@ public final class lectorDePDF extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         p = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-        btnabrir = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -110,17 +109,6 @@ public final class lectorDePDF extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton3, new java.awt.GridBagConstraints());
-
-        btnabrir.setBackground(new java.awt.Color(255, 255, 255));
-        btnabrir.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnabrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/pdf.png"))); // NOI18N
-        btnabrir.setText("Abrir archivo PDF");
-        btnabrir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnabrirActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnabrir, new java.awt.GridBagConstraints());
 
         jButton4.setBackground(new java.awt.Color(255, 255, 255));
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/mas.png"))); // NOI18N
@@ -195,25 +183,6 @@ public final class lectorDePDF extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnabrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnabrirActionPerformed
-        //Metodo para buscar y abrir el PDF
-        JFileChooser j = new JFileChooser(ruta_archivo);
-        FileNameExtensionFilter fi = new FileNameExtensionFilter("pdf", "pdf");
-        j.setFileFilter(fi);
-        int se = j.showOpenDialog(this);
-        if (se == 0) {
-            ruta_archivo = j.getSelectedFile().getAbsolutePath();
-            //----------------
-            //Usamos el metodo abrir pdf para mostrarlo
-            abrir_pdf(ruta_archivo);
-            this.img.disminuir();
-            this.img.disminuir();
-
-        } else {
-            //JOptionPane.showMessageDialog(null, "No selecciono");
-        }
-    }//GEN-LAST:event_btnabrirActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //Metodo usado para retroceder pagina
@@ -358,7 +327,6 @@ public final class lectorDePDF extends javax.swing.JFrame {
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnabrir;
     private utiles.CuadroImagen img;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

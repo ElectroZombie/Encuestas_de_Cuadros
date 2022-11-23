@@ -72,6 +72,22 @@ public class Departamento {
         }
         return idEncuesta;
     }
+    public String getPersonaObjetivo(){
+        String obj="";
+        try {
+            Conexion C = new Conexion();
+            int idEncuesta =getIdEncuestaDepartamento();
+            C.conectar();
+            String stat ="select persona_objetivo from encuesta where ="+idEncuesta;
+            ResultSet rs = C.getConsulta().executeQuery(stat);
+            obj=rs.getString(1);
+            C.desconectar();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Departamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return obj;
+    }
     
     public static Departamento getDepartamento(int idDepartamento) {
        Conexion C = new Conexion();
