@@ -143,9 +143,12 @@ public class Departamento {
          }
      }
      
-      public static Vector<Tupla<Integer[], String[]>> getEstadisticasDepartamento(String nombreDepartamento, int anno) {
+      public static Tupla<Tupla<Integer, Integer>,Tupla<Object[], Object[]>> getEstadisticasDepartamento(String nombreDepartamento, int anno) {
           
-          Vector<Tupla<Integer[], String[]>> preguntas = new Vector<>();
+          Object[] preguntas = new Object[14];
+          Object[] preguntasSecundarias = new Object[13];
+          int cantE = 0;
+          int cantT = 0;
           
           try {
           int idD = getIdDepartamentoXNombre(nombreDepartamento);
@@ -156,17 +159,81 @@ public class Departamento {
           Conexion C = new Conexion();
           C.conectar();
           
-          String stat = "select * from trabajadores_x_departamento join encuesta_resuelta join preguntas_x_encuesta_resuelta on trabajadores_x_departamento.id_departamento = encuesta_resuelta.id_departamento and trabajadores_x_departamento.ano_encuesta = encuesta_resuelta.ano_encuesta and encuesta_resuelta.id_encuesta_resuelta = preguntas_x_encuesta_resuelta.id_encuesta_resuelta where trabajadores_x_departamento.ano_encuesta = " + anno + " and trabajadores_x_departamento.id_departamento = " + idD;
+          String stat = "select cantidad_trabajadores, cantidad_encuestados from trabajadores_x_departamento where ano_encuesta = " + anno + " and id_departamento = " + idD;
           ResultSet RS = C.getConsulta().executeQuery(stat);
+          cantT = RS.getInt("cantidad_trabajadores");
+          cantE = RS.getInt("cantidad_encuestados");
+          
+          
+          
+          stat = "select * from encuesta_resuelta join preguntas_x_encuesta_resuelta on encuesta_resuelta.id_encuesta_resuelta = preguntas_x_encuesta_resuelta.id_encuesta_resuelta where encuesta_resuelta.ano_encuesta = " + anno + " and encuesta_resuelta.id_departamento = " + idD;
+          RS = C.getConsulta().executeQuery(stat);
           
           if(RS.next()){
               do{
-                  
-                  int cantTrabajadores = RS.getInt(2);
-                  int cantEncuestados = RS.getInt(3);
+                
+                  int idEncuesta = RS.getInt("id_encuesta");
                   int idPregunta = RS.getInt("id_pregunta");
                   int seleccion = RS.getInt("seleccion_pregunta");
                   String argumentacion = RS.getString("argumento_pregunta");
+                  
+                  Tupla T;
+                  
+                  if(idEncuesta <= 4){
+                      if(preguntas[idPregunta]==null){
+                          T = new Tupla<Integer[], Vector<String>>(new Integer[3], new Vector<>());
+                      }
+                      else{
+                          T = (Tupla<Integer[], Vector<String>>)preguntas[idPregunta];
+                      }
+                      
+                      Integer[] I = (Integer[])T.getElemento1();
+                          
+                          if(seleccion == 0){
+                              I[0]++;
+                          }
+                          else if(seleccion == 1){
+                              I[1]++;
+                          }
+                          else{
+                              I[2]++;
+                          }
+                          
+                          Vector<String> V = (Vector<String>)T.getElemento2();
+                          V.add(argumentacion);
+                          
+                          T.setElemento1(I);
+                          T.setElemento2(V);
+                          preguntas[idPregunta] = T;
+                      
+                  }
+                  else{
+                      if(preguntasSecundarias[idPregunta]==null){
+                          T = new Tupla<Integer[], Vector<String>>(new Integer[3], new Vector<>());
+                      }
+                      else{
+                          T = (Tupla<Integer[], Vector<String>>)preguntasSecundarias[idPregunta];
+                      }
+                      
+                      Integer[] I = (Integer[])T.getElemento1();
+                          
+                          if(seleccion == 0){
+                              I[0]++;
+                          }
+                          else if(seleccion == 1){
+                              I[1]++;
+                          }
+                          else{
+                              I[2]++;
+                          }
+                          
+                          Vector<String> V = (Vector<String>)T.getElemento2();
+                          V.add(argumentacion);
+                          
+                          T.setElemento1(I);
+                          T.setElemento2(V);
+                          preguntasSecundarias[idPregunta] = T;
+                  }
                   
                   
               }while(RS.next());
@@ -178,7 +245,7 @@ public class Departamento {
                   Logger.getLogger(Departamento.class.getName()).log(Level.SEVERE, null, ex);
               }
           
-          return preguntas;
+          return new Tupla<>(new Tupla<>(cantT, cantE),new Tupla<>(preguntas, preguntasSecundarias));
       }
       
       public static int getIdDepartamentoXNombre(String nombreDepartamento){
@@ -192,7 +259,7 @@ public class Departamento {
               
               C.desconectar();
               return idD;
-          } catch (Exception e) {
+          } catch (SQLException e) {
           }
           return -1;
       }

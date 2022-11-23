@@ -7,6 +7,8 @@ package utiles;
 /**
  *
  * @author joan
+ * @param <T>
+ * @param <K>
  */
 public class Tupla<T, K> {
     

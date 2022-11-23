@@ -5,14 +5,24 @@
 package visuales;
 
 import base_de_datos.GestionBD;
+import dialogs.AbstractFrame;
+import dialogs.MessageDialog;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
+import javax.swing.JCheckBox;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import utiles.CheckBoxEditor;
+import utiles.ComponentRenderer;
 import utiles.Tupla;
 
 /**
  *
  * @author electro-zombie
  */
-public class EstadisticasDepartamento extends javax.swing.JFrame {
+public class EstadisticasDepartamento extends AbstractFrame {
 
     /**
      * Creates new form EstadisticasDepartamento
@@ -27,7 +37,12 @@ public class EstadisticasDepartamento extends javax.swing.JFrame {
         this.nombreDepartamento = nombreDepartamento;
         this.anno = anno;
         
-        Vector<Tupla<Integer[], String[]>> datosPregunta = GestionBD.getEstadisticasDepartamento(nombreDepartamento, anno);
+        Tupla<Tupla<Integer, Integer>,Tupla<Object[], Object[]>> datosPregunta = GestionBD.getEstadisticasDepartamento(nombreDepartamento, anno);
+        
+        CantTrabLabel.setText(datosPregunta.getElemento1().getElemento1()+"");
+        cantEncLabel.setText(datosPregunta.getElemento1().getElemento2()+"");
+        
+        actualizarTablaPreguntas(datosPregunta.getElemento2());
     }
 
     /**
@@ -46,7 +61,7 @@ public class EstadisticasDepartamento extends javax.swing.JFrame {
         cantEncLabel = new javax.swing.JLabel();
         Reporte = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaPreguntas = new javax.swing.JTable();
         departamento = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -64,7 +79,7 @@ public class EstadisticasDepartamento extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPreguntas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -75,7 +90,7 @@ public class EstadisticasDepartamento extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaPreguntas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -137,7 +152,88 @@ public class EstadisticasDepartamento extends javax.swing.JFrame {
     private javax.swing.JLabel cantidadEncuestas;
     private javax.swing.JLabel departamento;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaPreguntas;
     // End of variables declaration//GEN-END:variables
+
+    private void actualizarTablaPreguntas(Tupla<Object[], Object[]> T) {
+
+         DefaultTableModel d = new DefaultTableModel() {
+            
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 7;
+            }
+        ;
+        };
+        Object[] OBJ = new Object[8];
+        d.addColumn("Indice de pregunta");
+        d.addColumn("Si");
+        d.addColumn("<- Porciento");
+        d.addColumn("No");
+        d.addColumn("<- Porciento");
+        d.addColumn("En ocasiones");
+        d.addColumn("<- Porciento");
+        d.addColumn("Justificaciones");
+        
+        for (int i = 0; i < T.getElemento1().length; i++) {
+            Tupla temp = (Tupla<Integer[], Vector<String>>)T.getElemento1()[i];
+            Integer[] I = (Integer[])temp.getElemento1();
+
+            double totalP = I[0]+I[1]+I[2];
+            OBJ[0] = (i+1);
+            OBJ[1] = I[0];
+            OBJ[2] = (Double)(I[0]*100.0)/totalP;
+            OBJ[3] = I[1];
+            OBJ[4] = (Double)(I[1]*100.0)/totalP;
+            OBJ[5] = I[2];
+            OBJ[6] = (Double)(I[2]*100.0)/totalP;
+            OBJ[7] = new JCheckBox();
+            
+            d.addRow(OBJ);
+        }
+        
+        tablaPreguntas = new JTable(d);
+        
+        tablaPreguntas.setFont(new Font("arial", Font.BOLD, 14));
+        tablaPreguntas.setRowHeight(30);
+        tablaPreguntas.setShowGrid(true);
+        
+        
+        tablaPreguntas.getColumn("Selección").setCellRenderer(
+                new ComponentRenderer());
+        tablaPreguntas.getColumn("Selección").setCellEditor(
+                new CheckBoxEditor(new JCheckBox()));
+        
+        tablaPreguntas.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                int fila = tablaPreguntas.rowAtPoint(e.getPoint());
+                int columna = tablaPreguntas.columnAtPoint(e.getPoint());
+                
+                if (fila > -1 && columna == 7) {
+                
+                    String just = "";
+                    Tupla temp = (Tupla<Integer[], Vector<String>>)T.getElemento1()[fila];
+                    Vector<String> V = (Vector<String>)temp.getElemento2();
+                    
+                    for(int i = 0; i < V.size(); i++){
+                        just += (i+1) + ": " + V.elementAt(i) + "\n";
+                    }
+                    
+                    MessageDialog message = new MessageDialog(just, "Distintas opiniones", AbstractFrame.Language.ES, EstadisticasDepartamento.this);
+                    message.setVisible(true);
+                    
+                    
+                }
+                    
+                
+            }
+            
+        });
+        
+        jScrollPane1.setViewportView(tablaPreguntas);
+        
+    }
 
 }
