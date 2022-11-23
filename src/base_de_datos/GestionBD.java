@@ -8,7 +8,6 @@ import modelos.Encuesta;
 import modelos.Departamento;
 
 import java.util.Vector;
-import javax.swing.JLabel;
 import modelos.Usuario;
 import utiles.Tupla;
 
@@ -73,7 +72,7 @@ public class GestionBD {
         return Encuesta.getEncuestasRealizadas(idD);
     }
 
-    public static Vector<Tupla<Integer[], String[]>> getEstadisticasDepartamento(String nombreDepartamento, int anno) {
+    public static Tupla<Tupla<Integer, Integer>,Tupla<Object[], Object[]>> getEstadisticasDepartamento(String nombreDepartamento, int anno) {
         return Departamento.getEstadisticasDepartamento(nombreDepartamento, anno);
     }
     
