@@ -58,6 +58,11 @@ public class EstadisticasDepartamento extends javax.swing.JFrame {
         cantidadEncuestas.setText("Cantidad de Encuestados");
 
         Reporte.setText("Reporte");
+        Reporte.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ReporteMouseClicked(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -117,6 +122,10 @@ public class EstadisticasDepartamento extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ReporteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReporteMouseClicked
+       
+    }//GEN-LAST:event_ReporteMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -16,7 +16,7 @@ import utiles.MiVisorPDF;
  *
  * @author David
  */
-public class lectorDePDF extends javax.swing.JFrame {
+public final class lectorDePDF extends javax.swing.JFrame {
 
     /**
      * Creates new form lectorDePDF
@@ -40,9 +40,12 @@ public class lectorDePDF extends javax.swing.JFrame {
     //Mantiene el zoom en la pagina que asignamos
     int zoom = 0;
 
-    public lectorDePDF() {
+    public lectorDePDF(String ruta) {
         initComponents();
-
+        this.ruta_archivo=ruta;
+        abrir_pdf(ruta_archivo);
+            this.img.disminuir();
+            this.img.disminuir();
     }
 
     /**
