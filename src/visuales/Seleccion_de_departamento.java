@@ -28,7 +28,7 @@ public class Seleccion_de_departamento extends javax.swing.JFrame {
         }
         
         encRealText.setText(GestionBD.getEncuestasRealizadas()+"");
-        encRealDelText.setText(GestionBD.getEncuestasRealizadasDep(DepartamentoComboBox.getSelectedIndex())+"");
+        encRealDelText.setText(GestionBD.getEncuestasRealizadasDep(DepartamentoComboBox.getSelectedIndex()+1)+"");
     }
 
     /**
@@ -145,7 +145,7 @@ public class Seleccion_de_departamento extends javax.swing.JFrame {
     }//GEN-LAST:event_AceptButtonMouseClicked
 
     private void DepartamentoComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_DepartamentoComboBoxPopupMenuWillBecomeInvisible
-        encRealDelText.setText(GestionBD.getEncuestasRealizadasDep(DepartamentoComboBox.getSelectedIndex())+"");
+        encRealDelText.setText(GestionBD.getEncuestasRealizadasDep(DepartamentoComboBox.getSelectedIndex()+1)+"");
     }//GEN-LAST:event_DepartamentoComboBoxPopupMenuWillBecomeInvisible
 
     /**

@@ -6,9 +6,7 @@ package visuales;
 
 import base_de_datos.GestionBD;
 import dialogs.*;
-import modelos.Departamento;
-import modelos.Encuesta;
-import modelos.Respuesta;
+import modelos.*;
 
 /**
  *
@@ -189,21 +187,7 @@ public class EncuestaBuilder extends javax.swing.JFrame{
 
     private void NextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NextButtonMouseClicked
 
-        if (e.getPreguntas().size() == preguntaIndex) {
-            if (flag) {
-                
-                GestionBD.setEncuestaResuelta(principal, d);
-                GestionBD.setEncuestaResuelta(e, d);
-            } else {
-                flag = true;
-                principal = e;
-                e = GestionBD.getEncuestaSecundaria(principal);
-                preguntaIndex = 0;
-                inciarVicual();
-                buttonGroup1.clearSelection();
-                JustificacionEditorPane.setText("");
-            }
-        }
+        
         if (e.getPreguntas().size() > preguntaIndex) {
             
             int seleccion = -1;
@@ -218,11 +202,9 @@ public class EncuestaBuilder extends javax.swing.JFrame{
             if(seleccion==-1){
                 return; 
             }
-
-            buttonGroup1.clearSelection();
-            JustificacionEditorPane.setText("");
-
-            e.setRespuesta(new Respuesta(seleccion, preguntaIndex));
+            
+            Respuesta R = new Respuesta(seleccion, preguntaIndex);
+            e.setRespuesta(R);
             if (JustificacionEditorPane.isEditable()) {
                 e.getRespuestas().elementAt(preguntaIndex).setArgumentacion(JustificacionEditorPane.getText());
             }
@@ -230,9 +212,31 @@ public class EncuestaBuilder extends javax.swing.JFrame{
             PregutaEditorPane.setText(e.getPreguntas().elementAt(preguntaIndex).getPregunta());
             JustificacionEditorPane.setEditable(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
 
-            numeroPregunta.setText((preguntaIndex + 1) + "/" + e.getPreguntas().size());
-            
+            buttonGroup1.clearSelection();
+            JustificacionEditorPane.setText("");
             preguntaIndex++;
+            numeroPregunta.setText((preguntaIndex + 1) + "/" + e.getPreguntas().size());
+
+            if (e.getPreguntas().size() == preguntaIndex) {
+            if (flag) {
+                
+                GestionBD.setEncuestaResuelta(principal, d);
+                GestionBD.setEncuestaResuelta(e, d);
+                
+                Seleccion_de_departamento SD = new Seleccion_de_departamento();
+                SD.setVisible(true);
+                dispose();
+            } else {
+                flag = true;
+                principal = e;
+                e = GestionBD.getEncuestaSecundaria(principal);
+                preguntaIndex = 0;
+                inciarVicual();
+                buttonGroup1.clearSelection();
+                JustificacionEditorPane.setText("");
+            }
+        }
+            
         }
 
     }//GEN-LAST:event_NextButtonMouseClicked

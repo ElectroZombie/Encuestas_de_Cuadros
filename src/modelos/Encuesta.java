@@ -212,7 +212,7 @@ public class Encuesta {
             id_encuesta= rs.getInt(1);
             c.desconectar();
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return getEncuesta(id_encuesta);
     }
@@ -230,9 +230,9 @@ public class Encuesta {
                   cont = RS.getInt(1);
               }
               C.desconectar();
-          } catch (Exception e) {
+          } catch (SQLException e) {
           }
-          return cont;
+          return cont/2;
     }
 
     public static int getEncuestasRealizadas(int idD) {
@@ -248,9 +248,9 @@ public class Encuesta {
                   cont = RS.getInt(1);
               }
               C.desconectar();
-          } catch (Exception e) {
+          } catch (SQLException e) {
           }
-          return cont;
+          return cont/2;
     }
 
     

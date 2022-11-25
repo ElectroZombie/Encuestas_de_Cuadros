@@ -273,12 +273,12 @@ public class Estadisticas extends AbstractFrame {
             OBJ[1] = est.elementAt(i)[0];
             OBJ[3] = est.elementAt(i)[1];
             OBJ[5] = est.elementAt(i)[2];
-            OBJ[2] = (Double)OBJ[1]*100/((Double)OBJ[1]+(Double)OBJ[3] + (Double)OBJ[5]);
-            OBJ[4] = (Double)OBJ[3]*100/((Double)OBJ[1]+(Double)OBJ[3] + (Double)OBJ[5]);
-            OBJ[6] = (Double)OBJ[5]*100/((Double)OBJ[1]+(Double)OBJ[3] + (Double)OBJ[5]);
+            OBJ[2] = (double)est.elementAt(i)[0]*100.0/((double)est.elementAt(i)[0]+(double)est.elementAt(i)[1] + (double)est.elementAt(i)[2]);
+            OBJ[4] = (double)est.elementAt(i)[1]*100.0/((double)est.elementAt(i)[0]+(double)est.elementAt(i)[1] + (double)est.elementAt(i)[2]);
+            OBJ[6] = (double)est.elementAt(i)[2]*100.0/((double)est.elementAt(i)[0]+(double)est.elementAt(i)[1] + (double)est.elementAt(i)[2]);
             OBJ[7] = est.elementAt(i)[3];
             OBJ[8] = est.elementAt(i)[4];
-            OBJ[9] = (Double)OBJ[8]*100/((Double)OBJ[7]);
+            OBJ[9] = (double)est.elementAt(i)[3]*100.0/(double)est.elementAt(i)[4];
             
             d.addRow(OBJ);
         }
