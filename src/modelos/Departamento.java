@@ -8,6 +8,7 @@ import base_de_datos.Conexion;
 import base_de_datos.GestionBD;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -123,19 +124,23 @@ public class Departamento {
                 stat = "select * from encuesta_resuelta join preguntas_x_encuesta_resuelta on encuesta_resuelta.id_encuesta_resuelta = preguntas_x_encuesta_resuelta.id_encuesta_resuelta where id_departamento = " + (i+1) + " and ano_encuesta = " + ano;
                 RS = C.getConsulta().executeQuery(stat);
                 
+                if(RS.next()){
                 do{
                     estXdep.elementAt(i)[RS.getInt("seleccion_pregunta")]++;
                 }while(RS.next());
+                }
                 
                 stat = "select * from trabajadores_x_departamento where ano_encuesta = " + ano + " and id_departamento = " + (i+1);
                 RS = C.getConsulta().executeQuery(stat);
                 
+                if(RS.next()){
                 do{
                     
                     estXdep.elementAt(i)[3]=RS.getInt("cantidad_trabajadores");
                     estXdep.elementAt(i)[4]=RS.getInt("cantidad_encuestados");
                     
                 }while(RS.next());
+                }
             }
             
             
@@ -146,13 +151,25 @@ public class Departamento {
     }
     
      public static void actualizarTotalTrabajadores(String departamento, int anno, int nuevoTotal) {
+         
+         int idD = getIdDepartamentoXNombre(departamento);
+         
          Conexion C = new Conexion();
          
          try {
-             C.conectar();
+             C.conectar();         
              
-             String stat = "update trabajadores_x_departamento join departamento on trabajadores.id_departamento = departamento.id_departamento set cantidad_trabajadores = " + nuevoTotal + " where departamento.nombre_departamento = '" + departamento + "' and ano_departamento = " + anno;
+             String stat = "select id_departamento from trabajadores_x_departamento where id_departamento = " + idD + " and ano_encuesta = " + LocalDate.now().getYear();
+             ResultSet RS = C.getConsulta().executeQuery(stat);
+             
+             if(RS.next()){
+             stat = "update trabajadores_x_departamento set cantidad_trabajadores = " + nuevoTotal + " where id_departamento = " + idD + " and ano_encuesta = " + anno;
              C.getConsulta().execute(stat);
+             }
+             else{
+                 stat = "insert into trabajadores_x_departamento values(" + idD + ", " + nuevoTotal + ", 0, " + LocalDate.now().getYear() + ")";
+                 C.getConsulta().execute(stat);
+             }
              
              C.desconectar();
          } catch (SQLException e) {
@@ -198,6 +215,10 @@ public class Departamento {
                   if(idEncuesta <= 4){
                       if(preguntas[idPregunta]==null){
                           T = new Tupla<Integer[], Vector<String>>(new Integer[3], new Vector<>());
+                          Integer[] I = (Integer[])T.getElemento1();
+                          for(int i = 0; i < I.length; i++){
+                              I[i] = 0;
+                          }
                       }
                       else{
                           T = (Tupla<Integer[], Vector<String>>)preguntas[idPregunta];
@@ -216,7 +237,10 @@ public class Departamento {
                           }
                           
                           Vector<String> V = (Vector<String>)T.getElemento2();
+                          
+                          if(!argumentacion.equals("")){
                           V.add(argumentacion);
+                          }
                           
                           T.setElemento1(I);
                           T.setElemento2(V);
@@ -226,6 +250,10 @@ public class Departamento {
                   else{
                       if(preguntasSecundarias[idPregunta]==null){
                           T = new Tupla<Integer[], Vector<String>>(new Integer[3], new Vector<>());
+                          Integer[] I = (Integer[])T.getElemento1();
+                          for(int i = 0; i < I.length; i++){
+                              I[i] = 0;
+                          }
                       }
                       else{
                           T = (Tupla<Integer[], Vector<String>>)preguntasSecundarias[idPregunta];
@@ -244,7 +272,10 @@ public class Departamento {
                           }
                           
                           Vector<String> V = (Vector<String>)T.getElemento2();
+                          
+                          if(!argumentacion.equals("")){
                           V.add(argumentacion);
+                          }
                           
                           T.setElemento1(I);
                           T.setElemento2(V);
@@ -269,7 +300,7 @@ public class Departamento {
           try {
               C.conectar();
               
-              String stat = "get id_departamento from departamento where nombre_departamento = '" + nombreDepartamento + "'";
+              String stat = "select id_departamento from departamento where nombre_departamento = '" + nombreDepartamento + "'";
               ResultSet RS = C.getConsulta().executeQuery(stat);
               int idD = RS.getInt("id_departamento");
               

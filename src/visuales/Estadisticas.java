@@ -267,7 +267,7 @@ public class Estadisticas extends AbstractFrame {
         d.addColumn("Numero de encuestados");
         d.addColumn("<- Porciento");
         
-        for (int i = 0; i < est.size(); i++) {
+        for (int i = 0; i < est.size()-1; i++) {
             
             OBJ[0] = GestionBD.getDepartamento(i+1).getNombreDepartamento();
             OBJ[1] = est.elementAt(i)[0];
@@ -278,7 +278,7 @@ public class Estadisticas extends AbstractFrame {
             OBJ[6] = (double)est.elementAt(i)[2]*100.0/((double)est.elementAt(i)[0]+(double)est.elementAt(i)[1] + (double)est.elementAt(i)[2]);
             OBJ[7] = est.elementAt(i)[3];
             OBJ[8] = est.elementAt(i)[4];
-            OBJ[9] = (double)est.elementAt(i)[3]*100.0/(double)est.elementAt(i)[4];
+            OBJ[9] = (double)est.elementAt(i)[4]*100.0/(double)est.elementAt(i)[3];
             
             d.addRow(OBJ);
         }

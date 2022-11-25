@@ -191,6 +191,25 @@ public class EstadisticasDepartamento extends AbstractFrame {
             
             d.addRow(OBJ);
         }
+        Object[] O = {"Encuesta secundaria"};
+        d.addRow(O);
+        
+        for (int i = 0; i < T.getElemento2().length; i++) {
+            Tupla temp = (Tupla<Integer[], Vector<String>>)T.getElemento2()[i];
+            Integer[] I = (Integer[])temp.getElemento2();
+
+            double totalP = I[0]+I[1]+I[2];
+            OBJ[0] = (i+1);
+            OBJ[1] = I[0];
+            OBJ[2] = (Double)(I[0]*100.0)/totalP;
+            OBJ[3] = I[1];
+            OBJ[4] = (Double)(I[1]*100.0)/totalP;
+            OBJ[5] = I[2];
+            OBJ[6] = (Double)(I[2]*100.0)/totalP;
+            OBJ[7] = new JCheckBox();
+            
+            d.addRow(OBJ);
+        }
         
         tablaPreguntas = new JTable(d);
         
@@ -199,9 +218,9 @@ public class EstadisticasDepartamento extends AbstractFrame {
         tablaPreguntas.setShowGrid(true);
         
         
-        tablaPreguntas.getColumn("Selección").setCellRenderer(
+        tablaPreguntas.getColumn("Justificaciones").setCellRenderer(
                 new ComponentRenderer());
-        tablaPreguntas.getColumn("Selección").setCellEditor(
+        tablaPreguntas.getColumn("Justificaciones").setCellEditor(
                 new CheckBoxEditor(new JCheckBox()));
         
         tablaPreguntas.addMouseListener(new MouseAdapter() {
@@ -222,7 +241,6 @@ public class EstadisticasDepartamento extends AbstractFrame {
                     }
                     
                     MessageDialog message = new MessageDialog(just, "Distintas opiniones", AbstractFrame.Language.ES, EstadisticasDepartamento.this);
-                    message.setVisible(true);
                     
                     
                 }

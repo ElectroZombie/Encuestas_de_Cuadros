@@ -4,9 +4,6 @@
  */
 package visuales;
 
-import base_de_datos.GestionBD;
-import java.util.Vector;
-
 /**
  *
  * @author joan
