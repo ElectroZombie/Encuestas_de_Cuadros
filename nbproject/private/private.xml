@@ -6,6 +6,7 @@
             <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/modelos/Encuesta.java</file>
             <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/visuales/Main.java</file>
             <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/modelos/Database.java</file>
+            <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/visuales/lectorDePDF.java</file>
             <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/base_de_datos/GestionBD.java</file>
             <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/visuales/Estadisticas.java</file>
             <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/modelos/Departamento.java</file>
@@ -15,6 +16,7 @@
             <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/utiles/ComponentRenderer.java</file>
             <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/visuales/Login.java</file>
             <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/utiles/CheckBoxEditor.java</file>
+            <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/visuales/ReporteBuilder.java</file>
             <file>file:/home/electro-zombie/Projects/Java/EncuestasDeCuadros/EncuestasDeCuadros/src/visuales/EstadisticasDepartamento.java</file>
         </group>
     </open-files>
