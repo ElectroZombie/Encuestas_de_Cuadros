@@ -252,6 +252,22 @@ public class Encuesta {
           }
           return cont/2;
     }
-
+    public static Vector<String> getAllpreguntas(){
+        Vector<String> preguntas= new Vector<>();
+        try {
+            
+            Conexion C = new Conexion();
+            C.conectar();
+            String stat="select texto_pregunta from pregunta";
+            ResultSet rs = C.getConsulta().executeQuery(stat);
+            while (rs.next()) {
+                preguntas.add(rs.getString(1));
+            }
+            C.desconectar();
+        } catch (SQLException ex) {
+            Logger.getLogger(Encuesta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return preguntas;
+    }
     
 }
