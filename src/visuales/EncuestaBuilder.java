@@ -38,6 +38,18 @@ public class EncuestaBuilder extends AbstractFrame{
         inciarVicual();
     }
 
+    @Override
+    public void messageDialog_returnValue(int selection) {
+        
+                Seleccion_de_departamento SD = new Seleccion_de_departamento();
+                SD.setVisible(true);
+                dispose();
+                
+    }
+    
+    
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -129,7 +141,7 @@ public class EncuestaBuilder extends AbstractFrame{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(numeroPregunta, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -176,6 +188,7 @@ public class EncuestaBuilder extends AbstractFrame{
             JustificacionEditorPane.setText(e.getRespuestas().elementAt(preguntaIndex).getArgumentacion());
 
             JustificacionEditorPane.setEditable(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
+            JustificacionEditorPane.setEnabled(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
 
             numeroPregunta.setText((preguntaIndex + 1) + "/" + e.getPreguntas().size());
         }
@@ -199,6 +212,8 @@ public class EncuestaBuilder extends AbstractFrame{
             }
             
             if(seleccion==-1){
+                
+                MessageDialog message = new MessageDialog("Debe seleccionar una de las opciones", "Error", Language.ES, this);                
                 return; 
             }
             
@@ -210,6 +225,7 @@ public class EncuestaBuilder extends AbstractFrame{
 
             PregutaEditorPane.setText(e.getPreguntas().elementAt(preguntaIndex).getPregunta());
             JustificacionEditorPane.setEditable(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
+            JustificacionEditorPane.setEnabled(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
 
             buttonGroup1.clearSelection();
             JustificacionEditorPane.setText("");
@@ -222,11 +238,8 @@ public class EncuestaBuilder extends AbstractFrame{
                 GestionBD.setEncuestaResuelta(principal, d);
                 GestionBD.setEncuestaResuelta(e, d);
                 
-                MessageDialog message = new MessageDialog("Se han agregado las encuestas con exito", "Informacion", Language.ES, this);
+                MessageDialog message = new MessageDialog(1, "Se han agregado las encuestas con exito", "Informacion", Language.ES, this);
                 
-                Seleccion_de_departamento SD = new Seleccion_de_departamento();
-                SD.setVisible(true);
-                dispose();
             } else {
                 flag = true;
                 principal = e;
@@ -269,6 +282,7 @@ public class EncuestaBuilder extends AbstractFrame{
         PregutaEditorPane.setText(e.getPreguntas().elementAt(preguntaIndex).getPregunta());
         PregutaEditorPane.setEditable(false);
         JustificacionEditorPane.setEditable(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
+        JustificacionEditorPane.setEnabled(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
 
         numeroPregunta.setText((preguntaIndex + 1) + "/" + e.getPreguntas().size());
         PreguntaLabel.setText(e.getObjEncuesta());
