@@ -12,7 +12,7 @@ import modelos.*;
  *
  * @author joan
  */
-public class EncuestaBuilder extends javax.swing.JFrame{
+public class EncuestaBuilder extends AbstractFrame{
 
     /**
      * Creates new form EncuestaBuilder
@@ -25,6 +25,8 @@ public class EncuestaBuilder extends javax.swing.JFrame{
 
     public EncuestaBuilder(Encuesta e, Departamento d) {
         initComponents();
+        this.setLocationRelativeTo(null);
+        
         this.e = e;
         this.d = d;
         preguntaIndex = 0;
@@ -68,9 +70,9 @@ public class EncuestaBuilder extends javax.swing.JFrame{
 
         SiRadioButton.setText("Si");
 
-        NoRadioButton.setText("no");
+        NoRadioButton.setText("No");
 
-        EnOcacionesRadioButton.setText("En ocaciones");
+        EnOcacionesRadioButton.setText("En ocasiones");
 
         jScrollPane2.setViewportView(JustificacionEditorPane);
 
@@ -97,47 +99,41 @@ public class EncuestaBuilder extends javax.swing.JFrame{
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JustificacionLabel)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(PreguntaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jLabel1)
-                            .addGap(18, 18, 18)
-                            .addComponent(numeroPregunta, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(24, 24, 24))
+                            .addComponent(numeroPregunta, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jScrollPane1)
-                            .addContainerGap())
-                        .addGroup(layout.createSequentialGroup()
+                            .addGap(214, 214, 214)
                             .addComponent(SiRadioButton)
-                            .addGap(169, 169, 169)
+                            .addGap(18, 18, 18)
                             .addComponent(NoRadioButton)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
-                            .addComponent(EnOcacionesRadioButton)
-                            .addGap(100, 100, 100)))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(BackButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(NextButton)
-                .addGap(36, 36, 36))
+                            .addGap(18, 18, 18)
+                            .addComponent(EnOcacionesRadioButton))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(PreguntaLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(BackButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(NextButton))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(PreguntaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(numeroPregunta, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(numeroPregunta, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PreguntaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
@@ -149,11 +145,11 @@ public class EncuestaBuilder extends javax.swing.JFrame{
                 .addComponent(JustificacionLabel)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NextButton)
-                    .addComponent(BackButton))
-                .addGap(34, 34, 34))
+                    .addComponent(BackButton)
+                    .addComponent(NextButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -182,6 +178,9 @@ public class EncuestaBuilder extends javax.swing.JFrame{
             JustificacionEditorPane.setEditable(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
 
             numeroPregunta.setText((preguntaIndex + 1) + "/" + e.getPreguntas().size());
+        }
+        else{
+            MessageDialog message = new MessageDialog("Ya no se pueden cancelar mas preguntas", "Error", AbstractFrame.Language.ES, this);
         }
     }//GEN-LAST:event_BackButtonMouseClicked
 
@@ -223,6 +222,8 @@ public class EncuestaBuilder extends javax.swing.JFrame{
                 GestionBD.setEncuestaResuelta(principal, d);
                 GestionBD.setEncuestaResuelta(e, d);
                 
+                MessageDialog message = new MessageDialog("Se han agregado las encuestas con exito", "Informacion", Language.ES, this);
+                
                 Seleccion_de_departamento SD = new Seleccion_de_departamento();
                 SD.setVisible(true);
                 dispose();
@@ -234,6 +235,8 @@ public class EncuestaBuilder extends javax.swing.JFrame{
                 inciarVicual();
                 buttonGroup1.clearSelection();
                 JustificacionEditorPane.setText("");
+                
+                MessageDialog message = new MessageDialog("Se ha completado la encuesta con exito", "Informacion", Language.ES, this);
             }
         }
             

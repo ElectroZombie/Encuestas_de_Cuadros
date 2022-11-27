@@ -10,7 +10,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
-import javax.swing.JRadioButton;
 import javax.swing.JTable;
 
 /**
@@ -24,6 +23,7 @@ public class CheckBoxEditor extends DefaultCellEditor implements ItemListener {
     super(checkBox);
   }
 
+  @Override
   public Component getTableCellEditorComponent(JTable table, Object value,
       boolean isSelected, int row, int column) {
     if (value == null)

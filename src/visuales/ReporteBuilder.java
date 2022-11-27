@@ -4,8 +4,6 @@
  */
 package visuales;
 
-import Utiles.RadioButtonEditor;
-import Utiles.RadioButtonRenderer;
 import com.itextpdf.text.DocumentException;
 import java.awt.Checkbox;
 import java.awt.Font;
@@ -19,6 +17,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelos.Departamento;
 import modelos.Encuesta;
+import utiles.CheckBoxEditor;
+import utiles.ComponentRenderer;
 import utiles.Tupla;
 import utiles.reporte;
 
@@ -31,18 +31,26 @@ public class ReporteBuilder extends javax.swing.JFrame {
     /**
      * Creates new form ReporteBuilder
      */
-    private Vector<Checkbox> check;
+    private Vector<JCheckBox> check;
     private Departamento departamento;
     private Tupla<Tupla<Integer, Integer>, Tupla<Object[], Object[]>> informacionEncuestas;
-    private Vector<String> justificacionesT;
+    private Vector<String> justificacionesT = new Vector<>();
     private String conclusiones;
-    private Vector<String> justificacionesRales;
+    private Vector<String> justificacionesRales = new Vector<>();
 
     public ReporteBuilder(Departamento depratamento, Tupla<Tupla<Integer, Integer>, Tupla<Object[], Object[]>> informacionEncuestas) {
         initComponents();
         check = new Vector<>();
         this.departamento = depratamento;
         this.informacionEncuestas = informacionEncuestas;
+        
+        for (int i = 0; i < informacionEncuestas.getElemento2().getElemento1().length; i++) {
+            Tupla<Integer[], Vector<String>> T = (Tupla<Integer[], Vector<String>>)informacionEncuestas.getElemento2().getElemento1()[i];
+            for(int j = 0; j < T.getElemento2().size(); j++){
+                justificacionesT.add(T.getElemento2().elementAt(j));
+            }
+        }
+        
         Actualizar_tabla();
         llenarJustificaciones();
         conclusiones = jEditorPane1.getText();
@@ -98,7 +106,7 @@ public class ReporteBuilder extends javax.swing.JFrame {
             .addGroup(ConclusionLayout.createSequentialGroup()
                 .addGap(174, 174, 174)
                 .addComponent(ConclusionLabel)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addContainerGap(165, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ConclusionLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(ConclusionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,7 +114,7 @@ public class ReporteBuilder extends javax.swing.JFrame {
                         .addComponent(ConlcusionButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Cancelar))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
                 .addContainerGap())
         );
         ConclusionLayout.setVerticalGroup(
@@ -213,6 +221,8 @@ public class ReporteBuilder extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         Conclusion.setVisible(true);
+        Conclusion.setSize(400, 300);
+        Conclusion.setLocationRelativeTo(null);
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void ConlcusionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ConlcusionButtonMouseClicked
@@ -238,10 +248,9 @@ public class ReporteBuilder extends javax.swing.JFrame {
 
     private void aceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aceptarMouseClicked
          try {
-            String ruta = System.getProperty("user.dir");
             llenarJustificacionesReales();
             reporte.reporteBuild(departamento, true, LocalDate.now().getYear(), informacionEncuestas, Encuesta.getAllpreguntas(), justificacionesT, conclusiones);
-            lectorDePDF lp = new lectorDePDF(ruta + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + departamento.getNombreDepartamento() + ".pdf");
+            lectorDePDF lp = new lectorDePDF("Desktop" + System.getProperty("file.separator") + departamento.getNombreDepartamento() + ".pdf");
             lp.setVisible(true);
         } catch (FileNotFoundException | DocumentException ex) {
             Logger.getLogger(ReporteBuilder.class.getName()).log(Level.SEVERE, null, ex);
@@ -286,7 +295,7 @@ public class ReporteBuilder extends javax.swing.JFrame {
         d.addColumn("Seleccion");
         for (String justificacionesT1 : justificacionesT) {
             OBJ[0] = justificacionesT1;
-            check.add(new Checkbox("", false));
+            check.add(new JCheckBox("", false));
             OBJ[1] = check.lastElement();
             d.addRow(OBJ);
         }
@@ -297,14 +306,10 @@ public class ReporteBuilder extends javax.swing.JFrame {
         justificaciones.setRowHeight(30);
         justificaciones.setShowGrid(true);
 
-        justificaciones.getColumn("Justificaciones").setCellRenderer(
-                new RadioButtonRenderer());
-        justificaciones.getColumn("Justificaciones").setCellEditor(
-                new RadioButtonEditor(new JCheckBox()));
         justificaciones.getColumn("Seleccion").setCellRenderer(
-                new RadioButtonRenderer());
+                new ComponentRenderer());
         justificaciones.getColumn("Seleccion").setCellEditor(
-                new RadioButtonEditor(new JCheckBox()));
+                new CheckBoxEditor(new JCheckBox()));
 
         jScrollPane1.setViewportView(justificaciones);
 
@@ -321,7 +326,7 @@ public class ReporteBuilder extends javax.swing.JFrame {
 
     private void llenarJustificacionesReales() {
         for (int i = 0; i < justificacionesT.size(); i++) {
-            if (check.elementAt(i).getState()) {
+            if (check.elementAt(i).isSelected()) {
                 justificacionesRales.add(justificacionesT.elementAt(i));
             }
         }

@@ -6,6 +6,7 @@ package visuales;
 
 import base_de_datos.GestionBD;
 import dialogs.AbstractFrame;
+import dialogs.ConfirmDialog;
 import dialogs.InputDialog;
 import dialogs.MessageDialog;
 import java.awt.Font;
@@ -27,8 +28,14 @@ public class Estadisticas extends AbstractFrame {
      */
     public Estadisticas() {
         initComponents();
+        this.setLocationRelativeTo(null);
    
         Vector<Integer> annosEncuesta = GestionBD.getAnnosEncuestas();
+        
+        if(annosEncuesta.isEmpty()){
+            ConfirmDialog confirm = new ConfirmDialog(1, "Aun no se ha realizado ninguna encuesta. Desea importar una base de datos?", "Error", Language.ES, this);
+        }
+        else{
         
         for (Integer anno : annosEncuesta) {
             annos.addItem(anno+"");
@@ -36,16 +43,45 @@ public class Estadisticas extends AbstractFrame {
         
         Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamentosXAno(Integer.parseInt(annos.getSelectedItem()+""));        
         actualizarTablaEstadisticas(estadisticas);
+        
+        }
     }
 
     @Override
      public void inputDialog_returnValue(Object returnValue, int selection) {
-       int nuevoTotal = Integer.parseInt(returnValue+"");
+       int nuevoTotal = 0;
+       
+        try {
+            nuevoTotal = Integer.parseInt(returnValue+"");
+        } catch (NumberFormatException e) {
+            MessageDialog message = new MessageDialog("El valor escogido debe ser un numero", "Error", Language.ES, this);
+            return;
+        }
+       
+       if(nuevoTotal < Integer.parseInt(tablaEstadisticas.getValueAt(tablaEstadisticas.getSelectedRow(), 8)+"")){
+           MessageDialog message = new MessageDialog("Debe escoger un valor menor o igual al valor de encuestados", "Error", Language.ES, this);
+           return;
+       }
        
        GestionBD.actualizarTotalTrabajadores(tablaEstadisticas.getValueAt(tablaEstadisticas.getSelectedRow(), 0)+"", Integer.parseInt(annos.getSelectedItem()+""), nuevoTotal);
        Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamentosXAno(Integer.parseInt(annos.getSelectedItem()+""));        
        actualizarTablaEstadisticas(estadisticas);
      }
+
+    @Override
+    public void confirmDialog_returnValue(Object returnValue, int selection) {
+        Boolean confirm = (boolean)returnValue;
+        if(confirm){
+         selectBD();
+        }
+        else{
+            Main M = new Main();
+            M.setVisible(true);
+            dispose();
+        }
+    }
+     
+     
   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -141,17 +177,19 @@ public class Estadisticas extends AbstractFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(actualizarTotal)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(48, 48, 48)
                         .addComponent(mostrarDatos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(48, 48, 48)
                         .addComponent(annos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(salirBoton)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,7 +202,7 @@ public class Estadisticas extends AbstractFrame {
                     .addComponent(salirBoton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -211,20 +249,7 @@ public class Estadisticas extends AbstractFrame {
 
     private void selectBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectBDActionPerformed
        
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.db", "db");
-        
-        SeleccionarBD.setFileFilter(filtro);
-        int seleccion = SeleccionarBD.showOpenDialog(this);
-        
-        if(seleccion == JFileChooser.APPROVE_OPTION){
-            File file = SeleccionarBD.getSelectedFile();
-            
-            String direccion = file.getAbsolutePath();
-            
-            GestionBD.integrateDatabase(direccion);
-            Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamentosXAno(Integer.parseInt(annos.getSelectedItem()+""));        
-            actualizarTablaEstadisticas(estadisticas);
-        }
+        selectBD();
        
     }//GEN-LAST:event_selectBDActionPerformed
 
@@ -258,16 +283,20 @@ public class Estadisticas extends AbstractFrame {
         Object[] OBJ = new Object[10];
         d.addColumn("Departamento");
         d.addColumn("Si");
-        d.addColumn("<- Porciento");
+        d.addColumn("<- %");
         d.addColumn("No");
-        d.addColumn("<- Porciento");
+        d.addColumn("<- %");
         d.addColumn("En ocasiones");
-        d.addColumn("<- Porciento");
-        d.addColumn("Total de encuestados");
-        d.addColumn("Numero de encuestados");
-        d.addColumn("<- Porciento");
+        d.addColumn("<- %");
+        d.addColumn("Total Encuestados");
+        d.addColumn("# Encuestados");
+        d.addColumn("<- %");
         
         for (int i = 0; i < est.size()-1; i++) {
+            
+            if(est.elementAt(i)[3]==0){
+                continue;
+            }
             
             OBJ[0] = GestionBD.getDepartamento(i+1).getNombreDepartamento();
             OBJ[1] = est.elementAt(i)[0];
@@ -291,5 +320,29 @@ public class Estadisticas extends AbstractFrame {
         
         jScrollPane1.setViewportView(tablaEstadisticas);
         
+    }
+ 
+    private void selectBD(){
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.db", "db");
+        
+        SeleccionarBD.setFileFilter(filtro);
+        int seleccion = SeleccionarBD.showOpenDialog(this);
+        
+        if(seleccion == JFileChooser.APPROVE_OPTION){
+            File file = SeleccionarBD.getSelectedFile();
+            
+            String direccion = file.getAbsolutePath();
+            
+            GestionBD.integrateDatabase(direccion);
+            
+            Vector<Integer> annosEncuesta = GestionBD.getAnnosEncuestas();
+            
+            for (Integer anno : annosEncuesta) {
+                annos.addItem(anno+"");
+            }
+            
+            Vector<int[]> estadisticas = GestionBD.getEstadisticasDepartamentosXAno(Integer.parseInt(annos.getSelectedItem()+""));        
+            actualizarTablaEstadisticas(estadisticas);
+        }
     }
 }

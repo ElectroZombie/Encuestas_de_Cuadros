@@ -35,17 +35,20 @@ public class Database {
                 cont = RS.getInt(1);
             }
             
-            stat = "select count{id_encuesta_resuelta}, * from encuesta_resuelta";
+            stat = "select count(id_encuesta_resuelta) from encuesta_resuelta";
+            RS = CE.getConsulta().executeQuery(stat);
+            int contEncuestas = RS.getInt(1);
+            
+            stat = "select * from encuesta_resuelta";
             RS = CE.getConsulta().executeQuery(stat);
             
             HashMap<Integer, Integer> id_integracion = new HashMap<>();
 
-            int[] encuesta_resuelta = new int[4];
             Vector<int[]> encuestas = new Vector<>();
-            int contEncuestas = RS.getInt(1);
-            
+            int[] encuesta_resuelta;
             if(RS.next()){
                 do{
+                    encuesta_resuelta = new int[4];
                     encuesta_resuelta[0] = RS.getInt("id_encuesta_resuelta");
                     encuesta_resuelta[1] = RS.getInt("id_encuesta");
                     encuesta_resuelta[2] = RS.getInt("id_departamento");
@@ -59,7 +62,7 @@ public class Database {
                 return;
             }
             
-            stat = "select * from trabajadores_x_encuesta where ano_encuesta = " + encuestas.elementAt(0)[3] + " and id_departamento = " + encuestas.elementAt(0)[2];
+            stat = "select * from trabajadores_x_departamento where ano_encuesta = " + encuestas.elementAt(0)[3] + " and id_departamento = " + encuestas.elementAt(0)[2];
             RS = C.getConsulta().executeQuery(stat);
             if(RS.next()){
                 C.desconectar();
@@ -74,17 +77,22 @@ public class Database {
                 id_integracion.put(encuestas.elementAt(i)[0], cont);
             }
             
-            stat = "select * from preguntas_encuesta_resuelta";
+            stat = "select * from preguntas_x_encuesta_resuelta";
             RS = CE.getConsulta().executeQuery(stat);
             while(RS.next()){
-                stat = "insert into preguntas_encuesta_resuelta values(" + id_integracion.get(RS.getInt("id_encuesta_resuelta")) + ", " + RS.getInt("id_pregunta") + ", " + RS.getInt("seleccion_pregunta") + ", '" + RS.getInt("argumento_pregunta") + "')";
+                stat = "insert into preguntas_x_encuesta_resuelta values(" + id_integracion.get(RS.getInt("id_encuesta_resuelta")) + ", " + RS.getInt("id_pregunta") + ", " + RS.getInt("seleccion_pregunta") + ", '" + RS.getString("argumento_pregunta") + "')";
                 C.getConsulta().execute(stat);
             }
             
-            stat = "insert into trabajadores_x_departamento values(" + encuesta_resuelta[2] + ", " + contEncuestas + " , " + contEncuestas + ", " + encuesta_resuelta[3] + ")";
+            
+            stat = "select * from trabajadores_x_departamento where ano_encuesta = " + encuestas.elementAt(0)[3] + " and id_departamento = " + encuestas.elementAt(0)[2];
+            RS = CE.getConsulta().executeQuery(stat);
+            int cantT = RS.getInt("cantidad_trabajadores");
+            int cantE = RS.getInt("cantidad_encuestados");
+            
+            stat = "insert into trabajadores_x_departamento values(" + encuesta_resuelta[2] + ", " + cantT + " , " + cantE + ", " + encuesta_resuelta[3] + ")";
             C.getConsulta().execute(stat);
-            
-            
+                
             C.desconectar();
             CE.desconectar();
         } catch (SQLException e) {

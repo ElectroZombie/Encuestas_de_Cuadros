@@ -106,6 +106,22 @@ public class Departamento {
         return null;
     }
     
+    public static Departamento getDepartamento(String nombreDepartamento) {
+       Conexion C = new Conexion();
+        try {
+            C.conectar();
+            
+            String stat = "select * from departamento where nombre_departamento = '" + nombreDepartamento + "'";
+            ResultSet RS = C.getConsulta().executeQuery(stat);
+            Departamento D = new Departamento(RS.getInt("id_departamento"), RS.getString("nombre_departamento"));
+
+            C.desconectar();
+            return D;
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+    
     public static Vector<int[]> getEstadisticasDepartamentosXAno(int ano) {
 
         Vector<int[]> estXdep = new Vector<>();

@@ -30,17 +30,20 @@ public class EstadisticasDepartamento extends AbstractFrame {
     
     private final String nombreDepartamento;
     private final int anno;
+    private Tupla<Tupla<Integer, Integer>,Tupla<Object[], Object[]>> datosPregunta;
     
     public EstadisticasDepartamento(String nombreDepartamento, int anno) {
         initComponents();
+        this.setLocationRelativeTo(null);
         
         this.nombreDepartamento = nombreDepartamento;
         this.anno = anno;
         
-        Tupla<Tupla<Integer, Integer>,Tupla<Object[], Object[]>> datosPregunta = GestionBD.getEstadisticasDepartamento(nombreDepartamento, anno);
+        datosPregunta = GestionBD.getEstadisticasDepartamento(nombreDepartamento, anno);
         
         CantTrabLabel.setText(datosPregunta.getElemento1().getElemento1()+"");
         cantEncLabel.setText(datosPregunta.getElemento1().getElemento2()+"");
+        departamento.setText(nombreDepartamento);
         
         actualizarTablaPreguntas(datosPregunta.getElemento2());
     }
@@ -69,6 +72,11 @@ public class EstadisticasDepartamento extends AbstractFrame {
         CantidadTrabajadores.setText("Cantidad de Trabajadores");
 
         Atras.setText("Atras");
+        Atras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AtrasActionPerformed(evt);
+            }
+        });
 
         cantidadEncuestas.setText("Cantidad de Encuestados");
 
@@ -96,51 +104,69 @@ public class EstadisticasDepartamento extends AbstractFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Atras)
-                .addGap(18, 18, 18)
-                .addComponent(CantidadTrabajadores)
-                .addGap(18, 18, 18)
-                .addComponent(CantTrabLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(departamento, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(cantidadEncuestas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cantEncLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Reporte)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Atras)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(CantidadTrabajadores)
+                                .addGap(18, 18, 18)
+                                .addComponent(CantTrabLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(Reporte))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cantidadEncuestas)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cantEncLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(departamento, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 259, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cantidadEncuestas)
-                        .addComponent(Reporte)
-                        .addComponent(Atras)
-                        .addComponent(CantidadTrabajadores))
-                    .addComponent(CantTrabLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(departamento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cantEncLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addComponent(departamento, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(CantidadTrabajadores)
+                                .addComponent(cantidadEncuestas))
+                            .addComponent(cantEncLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Reporte)
+                            .addComponent(Atras)))
+                    .addComponent(CantTrabLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void ReporteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReporteMouseClicked
-       
+        ReporteBuilder RB = new ReporteBuilder(GestionBD.getDepartamento(nombreDepartamento), datosPregunta);
+        RB.setVisible(true);
+        dispose();
     }//GEN-LAST:event_ReporteMouseClicked
+
+    private void AtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtrasActionPerformed
+        Estadisticas E = new Estadisticas();
+        E.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_AtrasActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -191,12 +217,14 @@ public class EstadisticasDepartamento extends AbstractFrame {
             
             d.addRow(OBJ);
         }
-        Object[] O = {"Encuesta secundaria"};
+        JCheckBox check = new JCheckBox();
+        check.setEnabled(false);
+        Object[] O = {"Encuesta secundaria", "", "", "", "", "", "", check};
         d.addRow(O);
         
         for (int i = 0; i < T.getElemento2().length; i++) {
             Tupla temp = (Tupla<Integer[], Vector<String>>)T.getElemento2()[i];
-            Integer[] I = (Integer[])temp.getElemento2();
+            Integer[] I = (Integer[])temp.getElemento1();
 
             double totalP = I[0]+I[1]+I[2];
             OBJ[0] = (i+1);
@@ -206,7 +234,8 @@ public class EstadisticasDepartamento extends AbstractFrame {
             OBJ[4] = (Double)(I[1]*100.0)/totalP;
             OBJ[5] = I[2];
             OBJ[6] = (Double)(I[2]*100.0)/totalP;
-            OBJ[7] = new JCheckBox();
+            JCheckBox JC = new JCheckBox();
+            OBJ[7] = JC;
             
             d.addRow(OBJ);
         }

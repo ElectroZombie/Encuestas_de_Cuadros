@@ -8,6 +8,7 @@ import modelos.Encuesta;
 import modelos.Departamento;
 
 import java.util.Vector;
+import modelos.Database;
 import modelos.Usuario;
 import utiles.Tupla;
 
@@ -38,6 +39,10 @@ public class GestionBD {
         return Departamento.getDepartamento(idDepartamento);
     }
     
+    public static Departamento getDepartamento(String nombreDepartamento) {
+        return Departamento.getDepartamento(nombreDepartamento);
+    }
+    
     public static boolean verifyUsuario(String usuario, String password){
         return Usuario.verifyUsuario(usuario, password);
     }
@@ -61,7 +66,7 @@ public class GestionBD {
     }
 
     public static void integrateDatabase(String direccion) {
-        
+        Database.integrateDatabase(direccion);
     }
 
     public static int getEncuestasRealizadas() {
