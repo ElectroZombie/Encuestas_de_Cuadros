@@ -5,22 +5,23 @@
 package visuales;
 
 import base_de_datos.GestionBD;
+import dialogs.AbstractFrame;
+import dialogs.MessageDialog;
 
 /**
  *
  * @author joan
  */
-public class Login extends javax.swing.JFrame {
+public class Login extends AbstractFrame {
 
     /**
      * Creates new form Login
      */
     public Login() {
         
+        initComponents();
         this.setTitle("Registro");
         this.setLocationRelativeTo(null);
-        
-        initComponents();
     }
 
     /**
@@ -39,7 +40,14 @@ public class Login extends javax.swing.JFrame {
         PassLabel = new javax.swing.JLabel();
         PasswordField = new javax.swing.JPasswordField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(153, 153, 153));
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         UserLabel.setText("Nombre de usuario");
 
@@ -57,7 +65,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        PassLabel.setText("Contrasenna");
+        PassLabel.setText("Contrasena");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -71,9 +79,9 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(AceptButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                         .addComponent(CancelButton))
-                    .addComponent(UserLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(userTextField)
-                    .addComponent(PassLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PassLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(UserLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(120, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -106,6 +114,9 @@ public class Login extends javax.swing.JFrame {
             E.setVisible(true);
             dispose();
         }
+        else{
+            MessageDialog message = new MessageDialog("El usuario o la contrasena son incorrectos", "Error", Language.ES, this);
+        }
         
     }//GEN-LAST:event_AceptButtonMouseClicked
 
@@ -114,6 +125,12 @@ public class Login extends javax.swing.JFrame {
         M.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_CancelButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Main M = new Main();
+        M.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
