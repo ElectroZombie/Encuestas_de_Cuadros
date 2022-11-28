@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
+import java.io.IOException;
 
 /**
  *
@@ -35,7 +36,7 @@ public class MiVisorPDF {
     public ArrayList<ArchivosVO> leerPDF(String rutaPDF) {
         File file = new File(rutaPDF);
         byte[] bi = null;
-        ArrayList<ArchivosVO> ar = new ArrayList<ArchivosVO>();
+        ArrayList<ArchivosVO> ar = new ArrayList<>();
         try {
             RandomAccessFile raf = new RandomAccessFile(file, "r");
             //ReadableByteChannel ch = Channels.newChannel(new FileInputStream(file));
@@ -86,7 +87,7 @@ public class MiVisorPDF {
             channel.close();
             raf.close();
 
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return ar;

@@ -73,13 +73,16 @@ public class Departamento {
         }
         return idEncuesta;
     }
+    
     public String getPersonaObjetivo(){
         String obj="";
+        int idEncuesta = getIdEncuestaDepartamento();
         try {
+            
             Conexion C = new Conexion();
-            int idEncuesta =getIdEncuestaDepartamento();
+
             C.conectar();
-            String stat ="select persona_objetivo from encuesta where ="+idEncuesta;
+            String stat ="select persona_objetivo from encuesta where id_encuesta = "+idEncuesta;
             ResultSet rs = C.getConsulta().executeQuery(stat);
             obj=rs.getString(1);
             C.desconectar();

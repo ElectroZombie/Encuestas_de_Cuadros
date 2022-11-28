@@ -29,29 +29,27 @@ public class reporte {
 
         String ruta = System.getProperty("user.dir");
 
-        if (!flag) {
-            PdfWriter.getInstance(pdf, new FileOutputStream(ruta + "/" + d.getNombreDepartamento() + ".pdf"));
-        }
-        PdfWriter.getInstance(pdf, new FileOutputStream(ruta + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + d.getNombreDepartamento() + ".pdf"));
+       
+        PdfWriter.getInstance(pdf, new FileOutputStream(ruta + System.getProperty("file.separator") + d.getNombreDepartamento() + " - " + anno + ".pdf"));
         pdf.open();
         //poniendo el encabezado del pdf
         Paragraph encabezado = new Paragraph("Las Tunas " + LocalDate.now()+"\n\n");
         encabezado.setAlignment(Paragraph.ALIGN_LEFT);
         pdf.add(encabezado);
-        Paragraph departamentoOBJ = new Paragraph("Informe sobre los resultados del instrumento aplicado en el " + d.getNombreDepartamento() + " sobre el desempeño de los cuadros.\n");
+        Paragraph departamentoOBJ = new Paragraph("Informe sobre los resultados del instrumento aplicado en el departamento: " + d.getNombreDepartamento() + ", sobre el desempeño de los cuadros.\n");
         departamentoOBJ.setAlignment(Paragraph.ALIGN_JUSTIFIED);
         pdf.add(departamentoOBJ);
         
         Paragraph plantlla = new Paragraph("Plantilla de trabajadores: "+informacionEncuestas.getElemento1().getElemento1()+"\n");
         plantlla.setAlignment(Paragraph.ALIGN_LEFT);
         pdf.add(plantlla);
-        double porcientoDeAsistencia= (informacionEncuestas.getElemento1().getElemento1()*100)/informacionEncuestas.getElemento1().getElemento2();
+        double porcientoDeAsistencia= (informacionEncuestas.getElemento1().getElemento2()*100)/informacionEncuestas.getElemento1().getElemento1();
         Paragraph muestra = new Paragraph("Muestra total: "+informacionEncuestas.getElemento1().getElemento2()+", para un "+porcientoDeAsistencia);
         muestra.setAlignment(Paragraph.ALIGN_LEFT);
         pdf.add(muestra);
-        Paragraph personaOBJ = new Paragraph("Con relación al trabajo de "+d.getPersonaObjetivo()+"\n");
-        personaOBJ.setAlignment(Paragraph.ALIGN_LEFT);
-        pdf.add(personaOBJ);
+        //Paragraph personaOBJ = new Paragraph("Con relación al trabajo de "+d.getPersonaObjetivo()+"\n");
+        //personaOBJ.setAlignment(Paragraph.ALIGN_LEFT);
+        //pdf.add(personaOBJ);
         for (int i = 0; i < informacionEncuestas.getElemento2().getElemento1().length; i++) {
         String pregunta= preguntas.elementAt(i);
         Tupla t = (Tupla<Integer[],Vector<String>>)informacionEncuestas.getElemento2().getElemento1()[i];
@@ -60,12 +58,12 @@ public class reporte {
         pdf.add(preguntaP);
             List lista = new List(true);
         Integer[] preguntasOpciones= (Integer[]) t.getElemento1();
-        double siPorciento = (preguntasOpciones[0]*100)/preguntasOpciones[0]+preguntasOpciones[1]+preguntasOpciones[2];
-        double noPorciento = (preguntasOpciones[1]*100)/preguntasOpciones[0]+preguntasOpciones[1]+preguntasOpciones[2];
-        double enOcacionesPorciento = (preguntasOpciones[2]*100)/preguntasOpciones[0]+preguntasOpciones[1]+preguntasOpciones[2];
-        lista.add(new ListItem("Porciento de si: "+siPorciento));
-        lista.add(new ListItem("Porciento de si: "+noPorciento));
-        lista.add(new ListItem("Porciento de si: "+enOcacionesPorciento));
+        double siPorciento = (preguntasOpciones[0]*100)/(preguntasOpciones[0]+preguntasOpciones[1]+preguntasOpciones[2]);
+        double noPorciento = (preguntasOpciones[1]*100)/(preguntasOpciones[0]+preguntasOpciones[1]+preguntasOpciones[2]);
+        double enOcacionesPorciento = (preguntasOpciones[2]*100)/(preguntasOpciones[0]+preguntasOpciones[1]+preguntasOpciones[2]);
+        lista.add(new ListItem("Porcentaje de afirmaciones: "+siPorciento));
+        lista.add(new ListItem("Porcentaje de negaciones: "+noPorciento));
+        lista.add(new ListItem("Porcentaje de En ocasiones: "+enOcacionesPorciento));
         pdf.add(lista);
         Paragraph salto = new Paragraph("\n");
         pdf.add(salto);
@@ -74,8 +72,8 @@ public class reporte {
         for (int i = 0; i < informacionEncuestas.getElemento2().getElemento2().length; i++) {
         String pregunta= "";
         pregunta = switch (i) {
-                case 6 -> preguntas.elementAt(14);
-                case 7 -> preguntas.elementAt(15);
+                case 6 -> preguntas.elementAt(15);
+                case 7 -> preguntas.elementAt(14);
                 default -> preguntas.elementAt(i);
             };
         Tupla t = (Tupla<Integer[],Vector<String>>)informacionEncuestas.getElemento2().getElemento2()[i];
@@ -84,17 +82,17 @@ public class reporte {
         pdf.add(preguntaP);
             List lista = new List(true);
         Integer[] preguntasOpciones= (Integer[]) t.getElemento1();
-        double siPorciento = (preguntasOpciones[0]*100)/preguntasOpciones[0]+preguntasOpciones[1]+preguntasOpciones[2];
-        double noPorciento = (preguntasOpciones[1]*100)/preguntasOpciones[0]+preguntasOpciones[1]+preguntasOpciones[2];
-        double enOcacionesPorciento = (preguntasOpciones[2]*100)/preguntasOpciones[0]+preguntasOpciones[1]+preguntasOpciones[2];
-        lista.add(new ListItem("Porciento de si: "+siPorciento));
-        lista.add(new ListItem("Porciento de si: "+noPorciento));
-        lista.add(new ListItem("Porciento de si: "+enOcacionesPorciento));
+        double siPorciento = (preguntasOpciones[0]*100)/(preguntasOpciones[0]+preguntasOpciones[1]+preguntasOpciones[2]);
+        double noPorciento = (preguntasOpciones[1]*100)/(preguntasOpciones[0]+preguntasOpciones[1]+preguntasOpciones[2]);
+        double enOcacionesPorciento = (preguntasOpciones[2]*100)/(preguntasOpciones[0]+preguntasOpciones[1]+preguntasOpciones[2]);
+        lista.add(new ListItem("Porcentaje de afirmaciones: "+siPorciento));
+        lista.add(new ListItem("Porcentaje de negaciones: "+noPorciento));
+        lista.add(new ListItem("Porcentaje de En ocasiones: "+enOcacionesPorciento));
         pdf.add(lista);
         Paragraph salto = new Paragraph("\n");
         pdf.add(salto);
         }
-        Paragraph justificacion = new Paragraph("hay criterios que se concentran en el "+d.getNombreDepartamento()+" relacionados con:\n");
+        Paragraph justificacion = new Paragraph("Hay criterios que se concentran en el departamento relacionados con:\n");
         justificacion.setAlignment(Paragraph.ALIGN_JUSTIFIED);
         pdf.add(justificacion);
         List jus = new List(true);
@@ -102,6 +100,10 @@ public class reporte {
             jus.add(justificacione);
         }
         pdf.add(jus);
+        Paragraph conclusion = new Paragraph("Conclusiones:\n"+conlcusiones+"\n");
+        conclusion.setAlignment(Paragraph.ALIGN_JUSTIFIED);
+        pdf.add(conclusion);
+        pdf.close();
     }
 }
  

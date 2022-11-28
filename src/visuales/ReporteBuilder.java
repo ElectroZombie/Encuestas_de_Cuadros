@@ -5,6 +5,8 @@
 package visuales;
 
 import com.itextpdf.text.DocumentException;
+import dialogs.AbstractFrame;
+import dialogs.InputDialog;
 import java.awt.Checkbox;
 import java.awt.Font;
 import java.io.FileNotFoundException;
@@ -26,7 +28,7 @@ import utiles.reporte;
  *
  * @author joan
  */
-public class ReporteBuilder extends javax.swing.JFrame {
+public class ReporteBuilder extends AbstractFrame {
 
     /**
      * Creates new form ReporteBuilder
@@ -37,25 +39,36 @@ public class ReporteBuilder extends javax.swing.JFrame {
     private Vector<String> justificacionesT = new Vector<>();
     private String conclusiones;
     private Vector<String> justificacionesRales = new Vector<>();
+    private final int anno;
 
-    public ReporteBuilder(Departamento depratamento, Tupla<Tupla<Integer, Integer>, Tupla<Object[], Object[]>> informacionEncuestas) {
+    public ReporteBuilder(Departamento depratamento, Tupla<Tupla<Integer, Integer>, Tupla<Object[], Object[]>> informacionEncuestas, int anno) {
         initComponents();
         check = new Vector<>();
         this.departamento = depratamento;
         this.informacionEncuestas = informacionEncuestas;
+        this.anno = anno;
         
-        for (int i = 0; i < informacionEncuestas.getElemento2().getElemento1().length; i++) {
-            Tupla<Integer[], Vector<String>> T = (Tupla<Integer[], Vector<String>>)informacionEncuestas.getElemento2().getElemento1()[i];
-            for(int j = 0; j < T.getElemento2().size(); j++){
-                justificacionesT.add(T.getElemento2().elementAt(j));
-            }
-        }
+        llenarJustificaciones();
         
         Actualizar_tabla();
-        llenarJustificaciones();
         conclusiones = jEditorPane1.getText();
         departamentoTextoLabel.setText(depratamento.getNombreDepartamento());
+        conclusiones = "";
     }
+
+    @Override
+    public void inputDialog_returnValue(Object returnValue, int selection) {
+        
+        if(returnValue != null){
+        
+            conclusiones = (String)returnValue;
+            
+        }
+       
+    }
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -79,7 +92,6 @@ public class ReporteBuilder extends javax.swing.JFrame {
         departamentoLabel = new javax.swing.JLabel();
         departamentoTextoLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        vistaPrviaButton = new javax.swing.JButton();
 
         jScrollPane2.setViewportView(jEditorPane1);
 
@@ -169,13 +181,6 @@ public class ReporteBuilder extends javax.swing.JFrame {
             }
         });
 
-        vistaPrviaButton.setText("Vista previa");
-        vistaPrviaButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                vistaPrviaButtonMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,14 +188,12 @@ public class ReporteBuilder extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(aceptar)
-                        .addGap(18, 18, 18)
+                        .addGap(111, 111, 111)
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                        .addComponent(vistaPrviaButton)
-                        .addGap(55, 55, 55)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cancelar))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(departamentoLabel)
@@ -211,8 +214,7 @@ public class ReporteBuilder extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(aceptar)
                     .addComponent(cancelar)
-                    .addComponent(jButton1)
-                    .addComponent(vistaPrviaButton))
+                    .addComponent(jButton1))
                 .addGap(21, 21, 21))
         );
 
@@ -220,9 +222,7 @@ public class ReporteBuilder extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        Conclusion.setVisible(true);
-        Conclusion.setSize(400, 300);
-        Conclusion.setLocationRelativeTo(null);
+        InputDialog input = new InputDialog(1, "Escriba las conclusiones", "Conclusiones", conclusiones, AbstractFrame.Language.ES, this);
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void ConlcusionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ConlcusionButtonMouseClicked
@@ -234,23 +234,11 @@ public class ReporteBuilder extends javax.swing.JFrame {
         Conclusion.setVisible(false);
     }//GEN-LAST:event_CancelarMouseClicked
 
-    private void vistaPrviaButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vistaPrviaButtonMouseClicked
-        try {
-            String ruta = System.getProperty("user.dir");
-            llenarJustificacionesReales();
-            reporte.reporteBuild(departamento, false, LocalDate.now().getYear(), informacionEncuestas, Encuesta.getAllpreguntas(), justificacionesT, conclusiones);
-            lectorDePDF lp = new lectorDePDF(ruta + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + departamento.getNombreDepartamento() + ".pdf");
-            lp.setVisible(true);
-        } catch (FileNotFoundException | DocumentException ex) {
-            Logger.getLogger(ReporteBuilder.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_vistaPrviaButtonMouseClicked
-
     private void aceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aceptarMouseClicked
          try {
             llenarJustificacionesReales();
-            reporte.reporteBuild(departamento, true, LocalDate.now().getYear(), informacionEncuestas, Encuesta.getAllpreguntas(), justificacionesT, conclusiones);
-            lectorDePDF lp = new lectorDePDF("Desktop" + System.getProperty("file.separator") + departamento.getNombreDepartamento() + ".pdf");
+            reporte.reporteBuild(departamento, true, anno, informacionEncuestas, Encuesta.getAllpreguntas(), justificacionesRales, conclusiones);
+            lectorDePDF lp = new lectorDePDF(System.getProperty("user.dir") + System.getProperty("file.separator") + departamento.getNombreDepartamento() + " - " + anno + ".pdf");
             lp.setVisible(true);
         } catch (FileNotFoundException | DocumentException ex) {
             Logger.getLogger(ReporteBuilder.class.getName()).log(Level.SEVERE, null, ex);
@@ -258,7 +246,9 @@ public class ReporteBuilder extends javax.swing.JFrame {
     }//GEN-LAST:event_aceptarMouseClicked
 
     private void cancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelarMouseClicked
-        //no se hacia donde vira este frame todo tuyo papi
+        EstadisticasDepartamento es = new EstadisticasDepartamento(departamento.getNombreDepartamento(), anno);
+        es.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_cancelarMouseClicked
 
     /**
@@ -279,14 +269,13 @@ public class ReporteBuilder extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable justificaciones;
-    private javax.swing.JButton vistaPrviaButton;
     // End of variables declaration//GEN-END:variables
     private void Actualizar_tabla() {
 
         DefaultTableModel d = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 0;
+                return column == 1;
             }
         };
 
@@ -316,11 +305,11 @@ public class ReporteBuilder extends javax.swing.JFrame {
     }
 
     private void llenarJustificaciones() {
-        justificacionesT = new Vector<>();
-        for (Object elemento2 : informacionEncuestas.getElemento2().getElemento2()) {
-            Tupla t = (Tupla<Integer[], Vector<String>>) elemento2;
-            Vector<String> just = (Vector<String>) t.getElemento2();
-            justificacionesT.addAll(just);
+         for (int i = 0; i < informacionEncuestas.getElemento2().getElemento1().length; i++) {
+            Tupla<Integer[], Vector<String>> T = (Tupla<Integer[], Vector<String>>)informacionEncuestas.getElemento2().getElemento1()[i];
+            for(int j = 0; j < T.getElemento2().size(); j++){
+                justificacionesT.add(T.getElemento2().elementAt(j));
+            }
         }
     }
 

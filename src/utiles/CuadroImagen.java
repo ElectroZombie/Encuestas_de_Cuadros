@@ -48,7 +48,6 @@ public class CuadroImagen
             resize();
             repaint();
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -109,7 +108,6 @@ public class CuadroImagen
             try {
                 job.print();
             } catch (PrinterException e) {
-                e.printStackTrace();
             }
         }
     }

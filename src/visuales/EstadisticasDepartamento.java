@@ -29,8 +29,8 @@ public class EstadisticasDepartamento extends AbstractFrame {
      */
     
     private final String nombreDepartamento;
-    private final int anno;
     private Tupla<Tupla<Integer, Integer>,Tupla<Object[], Object[]>> datosPregunta;
+    private final int anno;
     
     public EstadisticasDepartamento(String nombreDepartamento, int anno) {
         initComponents();
@@ -67,7 +67,14 @@ public class EstadisticasDepartamento extends AbstractFrame {
         tablaPreguntas = new javax.swing.JTable();
         departamento = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(153, 153, 153));
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         CantidadTrabajadores.setText("Cantidad de Trabajadores");
 
@@ -157,7 +164,7 @@ public class EstadisticasDepartamento extends AbstractFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ReporteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReporteMouseClicked
-        ReporteBuilder RB = new ReporteBuilder(GestionBD.getDepartamento(nombreDepartamento), datosPregunta);
+        ReporteBuilder RB = new ReporteBuilder(GestionBD.getDepartamento(nombreDepartamento), datosPregunta, anno);
         RB.setVisible(true);
         dispose();
     }//GEN-LAST:event_ReporteMouseClicked
@@ -167,6 +174,12 @@ public class EstadisticasDepartamento extends AbstractFrame {
         E.setVisible(true);
         dispose();
     }//GEN-LAST:event_AtrasActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+       Estadisticas E = new Estadisticas();
+       E.setVisible(true);
+       dispose();
+    }//GEN-LAST:event_formWindowClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

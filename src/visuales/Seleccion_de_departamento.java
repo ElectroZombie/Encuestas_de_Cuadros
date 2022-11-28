@@ -20,6 +20,8 @@ import modelos.Departamento;
 public class Seleccion_de_departamento extends AbstractFrame {
 
     private final Vector<String> departamentos;
+    private Encuesta E;
+    private Departamento D;
     
     public Seleccion_de_departamento() {
         initComponents();
@@ -33,6 +35,13 @@ public class Seleccion_de_departamento extends AbstractFrame {
         
         encRealText.setText(GestionBD.getEncuestasRealizadas()+"");
         encRealDelText.setText(GestionBD.getEncuestasRealizadasDep(DepartamentoComboBox.getSelectedIndex()+1)+"");
+    }
+
+    @Override
+    public void messageDialog_returnValue(int selection) {
+        EncuestaBuilder EB = new EncuestaBuilder(E, D);
+        EB.setVisible(true);
+        dispose();
     }
 
     /**
@@ -53,8 +62,14 @@ public class Seleccion_de_departamento extends AbstractFrame {
         encuestasRealizadasDep = new javax.swing.JLabel();
         encRealDelText = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 153));
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         DepartamentoComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
@@ -146,14 +161,12 @@ public class Seleccion_de_departamento extends AbstractFrame {
 
     private void AceptButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AceptButtonMouseClicked
        int idDepartamento = DepartamentoComboBox.getSelectedIndex()+1;
-       Departamento D = GestionBD.getDepartamento(idDepartamento);
+       D = GestionBD.getDepartamento(idDepartamento);
         
         int idE = GestionBD.getIdEncuestaDepartamento(D);
-        Encuesta E = GestionBD.getEncuesta(idE);
+        E = GestionBD.getEncuesta(idE);
 
-        ComenzarEncuesta ce = new ComenzarEncuesta(E, D);
-        ce.setVisible(true);
-        this.dispose();
+        MessageDialog message = new MessageDialog(1, E.getTextoEncuesta(), "Informacion", Language.ES, this);
     }//GEN-LAST:event_AceptButtonMouseClicked
 
     private void DepartamentoComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_DepartamentoComboBoxPopupMenuWillBecomeInvisible
@@ -165,6 +178,12 @@ public class Seleccion_de_departamento extends AbstractFrame {
         M.setVisible(true);
         dispose();
     }//GEN-LAST:event_CancelButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Main M = new Main();
+        M.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
