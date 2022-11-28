@@ -28,19 +28,9 @@ public class Database {
             CE.conectar();
             C.conectar();
             
-            String stat = "select max(id_encuesta_resuelta) from encuesta_resuelta";
-            ResultSet RS = C.getConsulta().executeQuery(stat);
-            int cont = 1;
-            if(RS.next()){
-                cont = RS.getInt(1);
-            }
             
-            stat = "select count(id_encuesta_resuelta) from encuesta_resuelta";
-            RS = CE.getConsulta().executeQuery(stat);
-            int contEncuestas = RS.getInt(1);
-            
-            stat = "select * from encuesta_resuelta";
-            RS = CE.getConsulta().executeQuery(stat);
+            String stat = "select * from encuesta_resuelta";
+            ResultSet RS = CE.getConsulta().executeQuery(stat);
             
             HashMap<Integer, Integer> id_integracion = new HashMap<>();
 
@@ -73,7 +63,11 @@ public class Database {
             for(int i = 0; i < encuestas.size();i++){
                 stat = "insert into encuesta_resuelta values(null, " + encuestas.elementAt(i)[1] + ", " + encuestas.elementAt(i)[2] + ", " + encuestas.elementAt(i)[3] + ")";
                 C.getConsulta().execute(stat);
-                cont++;
+                
+                stat = "select max(id_encuesta_resuelta) from encuesta_resuelta";
+                RS = C.getConsulta().executeQuery(stat);
+                int cont = RS.getInt(1);
+                
                 id_integracion.put(encuestas.elementAt(i)[0], cont);
             }
             
