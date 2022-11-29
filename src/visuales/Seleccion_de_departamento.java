@@ -6,6 +6,7 @@ package visuales;
 
 import base_de_datos.GestionBD;
 import dialogs.AbstractFrame;
+import dialogs.ConfirmDialog;
 import dialogs.MessageDialog;
 
 import modelos.Encuesta;
@@ -22,27 +23,72 @@ public class Seleccion_de_departamento extends AbstractFrame {
     private final Vector<String> departamentos;
     private Encuesta E;
     private Departamento D;
+    private final boolean admin;
     
-    public Seleccion_de_departamento() {
+    public Seleccion_de_departamento(boolean admin){
         initComponents();
         
         this.setLocationRelativeTo(null);
-
+        this.admin = admin;
+        
         this.departamentos = GestionBD.getDepartamentos();
+        int cont = 0;
         for (String departamento : departamentos) {
             DepartamentoComboBox.addItem(departamento);
+            
+            if(!admin){
+                if(GestionBD.getEncuestasRealizadasDep(DepartamentoComboBox.getItemCount())!=0){
+                    cont = DepartamentoComboBox.getItemCount()-1;
+                }
+            }
+            
+        }
+        int encuestasR = GestionBD.getEncuestasRealizadas();
+        encRealText.setText(encuestasR+"");
+        
+        if(!admin){
+        if(encuestasR!=0){
+            DepartamentoComboBox.setSelectedIndex(cont);
+            DepartamentoComboBox.setEnabled(false);
+        }
         }
         
-        encRealText.setText(GestionBD.getEncuestasRealizadas()+"");
         encRealDelText.setText(GestionBD.getEncuestasRealizadasDep(DepartamentoComboBox.getSelectedIndex()+1)+"");
+        
     }
 
     @Override
     public void messageDialog_returnValue(int selection) {
-        EncuestaBuilder EB = new EncuestaBuilder(E, D);
+        EncuestaBuilder EB = new EncuestaBuilder(E, D, admin);
         EB.setVisible(true);
         dispose();
     }
+
+    @Override
+    public void confirmDialog_returnValue(Object returnValue, int selection) {
+        boolean choice = (boolean)returnValue;
+        
+        if(choice){
+            
+            int idDepartamento = DepartamentoComboBox.getSelectedIndex()+1;
+            D = GestionBD.getDepartamento(idDepartamento);
+            
+            if(GestionBD.removeTodasEncuestasDepartamento(D)){
+                MessageDialog message = new MessageDialog("Se han eliminado las encuestas anteriores de forma exitosa", "Informacion", Language.ES, this);
+                
+                int encuestasR = GestionBD.getEncuestasRealizadas();
+                encRealText.setText(encuestasR+"");
+                encRealDelText.setText(GestionBD.getEncuestasRealizadasDep(DepartamentoComboBox.getSelectedIndex()+1)+"");
+                DepartamentoComboBox.setEnabled(true);
+                
+            }
+            else{
+                MessageDialog message = new MessageDialog("Ha ocurrido un error al eliminar las encuestas anteriores", "Error", Language.ES, this);
+            }
+        }
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,6 +124,11 @@ public class Seleccion_de_departamento extends AbstractFrame {
                 DepartamentoComboBoxPopupMenuWillBecomeInvisible(evt);
             }
             public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+        DepartamentoComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DepartamentoComboBoxMouseClicked(evt);
             }
         });
 
@@ -184,6 +235,14 @@ public class Seleccion_de_departamento extends AbstractFrame {
         M.setVisible(true);
         dispose();
     }//GEN-LAST:event_formWindowClosing
+
+    private void DepartamentoComboBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DepartamentoComboBoxMouseClicked
+        
+        if(!DepartamentoComboBox.isEnabled()){
+            ConfirmDialog confirm = new ConfirmDialog(1, "Solo se pueden agregar encuestas a un departamento a la vez. Desea borrar las encuestas realizadas anteriormente en otro departamento, y empezar desde cero?", "Informacion", Language.ES, this);
+        }
+        
+    }//GEN-LAST:event_DepartamentoComboBoxMouseClicked
 
     /**
      * @param args the command line arguments

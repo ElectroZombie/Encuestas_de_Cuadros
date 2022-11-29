@@ -22,13 +22,16 @@ public class EncuestaBuilder extends AbstractFrame{
     private int preguntaIndex;
     private Encuesta principal;
     private boolean flag;
+    private boolean admin;
 
-    public EncuestaBuilder(Encuesta e, Departamento d) {
+    public EncuestaBuilder(Encuesta e, Departamento d, boolean admin) {
         initComponents();
         this.setLocationRelativeTo(null);
         
         this.e = e;
         this.d = d;
+        this.admin = admin;
+        
         preguntaIndex = 0;
         principal = null;
         flag = false;
@@ -41,7 +44,7 @@ public class EncuestaBuilder extends AbstractFrame{
     @Override
     public void messageDialog_returnValue(int selection) {
         
-                Seleccion_de_departamento SD = new Seleccion_de_departamento();
+                Seleccion_de_departamento SD = new Seleccion_de_departamento(admin);
                 SD.setVisible(true);
                 dispose();
                 
@@ -262,7 +265,7 @@ public class EncuestaBuilder extends AbstractFrame{
                 buttonGroup1.clearSelection();
                 JustificacionEditorPane.setText("");
                 
-                MessageDialog message = new MessageDialog("Se ha completado la encuesta con exito", "Informacion", Language.ES, this);
+                MessageDialog message = new MessageDialog(e.getTextoEncuesta(), "Informacion", Language.ES, this);
             }
         }
             
@@ -271,7 +274,7 @@ public class EncuestaBuilder extends AbstractFrame{
     }//GEN-LAST:event_NextButtonMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Seleccion_de_departamento SD = new Seleccion_de_departamento();
+        Seleccion_de_departamento SD = new Seleccion_de_departamento(admin);
         SD.setVisible(true);
         dispose();
     }//GEN-LAST:event_formWindowClosing

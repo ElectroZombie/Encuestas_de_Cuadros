@@ -4,11 +4,14 @@
  */
 package visuales;
 
+import dialogs.AbstractFrame;
+import dialogs.ConfirmDialog;
+
 /**
  *
  * @author joan
  */
-public class Main extends javax.swing.JFrame {
+public class Main extends AbstractFrame {
 
     /**
      * Creates new form Login
@@ -20,6 +23,26 @@ public class Main extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setTitle("Encuestas sobre Cuadros");
     }
+
+    @Override
+    public void confirmDialog_returnValue(Object returnValue, int selection) {
+
+        boolean flag = (boolean)returnValue;
+        
+        if(flag){
+            Login L = new Login(2);
+            L.setVisible(true);
+            dispose();
+        }
+        else{
+            Seleccion_de_departamento sld = new Seleccion_de_departamento(false);
+            sld.setVisible(true);
+            dispose();
+        }
+        
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -100,16 +123,15 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LoginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseClicked
-        Login l = new Login();
+        Login l = new Login(1);
         l.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_LoginButtonMouseClicked
 
     private void EncuestasButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EncuestasButtonMouseClicked
 
-        Seleccion_de_departamento sld = new Seleccion_de_departamento();
-        sld.setVisible(true);
-        this.dispose();
+        ConfirmDialog confirm = new ConfirmDialog(1, "Desea ingresar como administrador?", "Sugerencia", AbstractFrame.Language.ES, this);
+       
     }//GEN-LAST:event_EncuestasButtonMouseClicked
 
     /**

@@ -329,4 +329,44 @@ public class Departamento {
           }
           return -1;
       }
+
+    public boolean removeAllEncuestas() {
+        Conexion C = new Conexion();
+        
+        try {
+            C.conectar();
+            
+            String stat = "delete from encuesta_resuelta";
+            C.getConsulta().execute(stat);
+            stat = "delete from preguntas_x_encuesta_resuelta";
+            C.getConsulta().execute(stat);
+            stat = "delete from trabajadores_x_departamento";
+            C.getConsulta().execute(stat);
+            
+            C.desconectar();
+        } catch (SQLException e) {
+            C.desconectar();
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean removeEncuestasXAno(int ano){
+        Conexion C = new Conexion();
+        
+        try {
+            C.conectar();
+            
+            String stat = "delete from encuesta_resuelta where ano_encuesta = " + ano + " and id_departamento = " + this.getIdDepartamento();
+            C.getConsulta().execute(stat);
+            stat = "delete from trabajadores_x_departamento where ano_encuesta = " + ano + " and id_departamento = " + this.getIdDepartamento();
+            C.getConsulta().execute(stat);
+            
+            C.desconectar();
+        } catch (SQLException e) {
+            C.desconectar();
+            return false;
+        }
+        return true;
+    }
 }

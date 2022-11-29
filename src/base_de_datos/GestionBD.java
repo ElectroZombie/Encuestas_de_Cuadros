@@ -64,9 +64,17 @@ public class GestionBD {
         return e.getEncuestaSec();
 
     }
+    
+    public static int verifyDatabase(String direccion) {
+        return Database.verifyDatabase(direccion);
+    }
 
-    public static void integrateDatabase(String direccion) {
-        Database.integrateDatabase(direccion);
+    public static boolean integrateDatabase(String direccion) {
+        return Database.integrateDatabase(direccion);
+    }
+    
+    public static boolean integrateDatabaseOverride(String direccion){
+        return Database.integrateDatabaseOverride(direccion);
     }
 
     public static int getEncuestasRealizadas() {
@@ -80,5 +88,10 @@ public class GestionBD {
     public static Tupla<Tupla<Integer, Integer>,Tupla<Object[], Object[]>> getEstadisticasDepartamento(String nombreDepartamento, int anno) {
         return Departamento.getEstadisticasDepartamento(nombreDepartamento, anno);
     }
+
+    public static boolean removeTodasEncuestasDepartamento(Departamento D) {
+        return D.removeAllEncuestas();
+    }
+
     
 } 

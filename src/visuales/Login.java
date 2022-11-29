@@ -17,11 +17,14 @@ public class Login extends AbstractFrame {
     /**
      * Creates new form Login
      */
-    public Login() {
+    private int opcion;
+    
+    public Login(int opcion) {
         
         initComponents();
         this.setTitle("Registro");
         this.setLocationRelativeTo(null);
+        this.opcion = opcion;
     }
 
     /**
@@ -110,9 +113,16 @@ public class Login extends AbstractFrame {
         String pass = String.valueOf(PasswordField.getPassword());
         
         if(GestionBD.verifyUsuario(user, pass)){
+            if(opcion == 1){
             Estadisticas E = new Estadisticas();
             E.setVisible(true);
             dispose();
+            }
+            else{
+            Seleccion_de_departamento sld = new Seleccion_de_departamento(true);
+            sld.setVisible(true);
+            this.dispose();
+            }
         }
         else{
             MessageDialog message = new MessageDialog("El usuario o la contrasena son incorrectos", "Error", Language.ES, this);
