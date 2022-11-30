@@ -27,10 +27,10 @@ public class reporte {
      
         Document pdf = new Document();
 
-        String ruta = System.getProperty("user.dir");
+        String ruta = System.getProperty("user.home");
 
        
-        PdfWriter.getInstance(pdf, new FileOutputStream(ruta + System.getProperty("file.separator") + d.getNombreDepartamento() + " - " + anno + ".pdf"));
+        PdfWriter.getInstance(pdf, new FileOutputStream(ruta + System.getProperty("file.separator")  +d.getNombreDepartamento() + " - " + anno + ".pdf"));
         pdf.open();
         //poniendo el encabezado del pdf
         Paragraph encabezado = new Paragraph("Las Tunas " + LocalDate.now()+"\n\n");

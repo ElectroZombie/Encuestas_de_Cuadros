@@ -7,10 +7,11 @@ package visuales;
 import com.itextpdf.text.DocumentException;
 import dialogs.AbstractFrame;
 import dialogs.InputDialog;
-import java.awt.Checkbox;
+import dialogs.MessageDialog;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +22,7 @@ import modelos.Departamento;
 import modelos.Encuesta;
 import utiles.CheckBoxEditor;
 import utiles.ComponentRenderer;
+import dialogs.MessageDialog;
 import utiles.Tupla;
 import utiles.reporte;
 
@@ -47,9 +49,9 @@ public class ReporteBuilder extends AbstractFrame {
         this.departamento = depratamento;
         this.informacionEncuestas = informacionEncuestas;
         this.anno = anno;
-        
+
         llenarJustificaciones();
-        
+
         Actualizar_tabla();
         conclusiones = jEditorPane1.getText();
         departamentoTextoLabel.setText(depratamento.getNombreDepartamento());
@@ -58,17 +60,14 @@ public class ReporteBuilder extends AbstractFrame {
 
     @Override
     public void inputDialog_returnValue(Object returnValue, int selection) {
-        
-        if(returnValue != null){
-        
-            conclusiones = (String)returnValue;
-            
+
+        if (returnValue != null) {
+
+            conclusiones = (String) returnValue;
+
         }
-       
+
     }
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -235,7 +234,7 @@ public class ReporteBuilder extends AbstractFrame {
     }//GEN-LAST:event_CancelarMouseClicked
 
     private void aceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aceptarMouseClicked
-         try {
+        try {
             llenarJustificacionesReales();
             reporte.reporteBuild(departamento, true, anno, informacionEncuestas, Encuesta.getAllpreguntas(), justificacionesRales, conclusiones);
             lectorDePDF lp = new lectorDePDF(System.getProperty("user.dir") + System.getProperty("file.separator") + departamento.getNombreDepartamento() + " - " + anno + ".pdf");
@@ -299,15 +298,30 @@ public class ReporteBuilder extends AbstractFrame {
                 new ComponentRenderer());
         justificaciones.getColumn("Seleccion").setCellEditor(
                 new CheckBoxEditor(new JCheckBox()));
+        justificaciones.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
 
+                int fila = justificaciones.rowAtPoint(e.getPoint());
+                int columna = justificaciones.columnAtPoint(e.getPoint());
+
+                if (fila > -1 && columna == 0) {
+                    
+                    MessageDialog message = new MessageDialog(justificacionesT.elementAt(fila), "Justificaciones", AbstractFrame.Language.ES, ReporteBuilder.this);
+
+                }
+
+            }
+
+        });
         jScrollPane1.setViewportView(justificaciones);
 
     }
 
     private void llenarJustificaciones() {
-         for (int i = 0; i < informacionEncuestas.getElemento2().getElemento1().length; i++) {
-            Tupla<Integer[], Vector<String>> T = (Tupla<Integer[], Vector<String>>)informacionEncuestas.getElemento2().getElemento1()[i];
-            for(int j = 0; j < T.getElemento2().size(); j++){
+        for (int i = 0; i < informacionEncuestas.getElemento2().getElemento1().length; i++) {
+            Tupla<Integer[], Vector<String>> T = (Tupla<Integer[], Vector<String>>) informacionEncuestas.getElemento2().getElemento1()[i];
+            for (int j = 0; j < T.getElemento2().size(); j++) {
                 justificacionesT.add(T.getElemento2().elementAt(j));
             }
         }
