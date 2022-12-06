@@ -39,6 +39,8 @@ public class EncuestaBuilder extends AbstractFrame{
         buttonGroup1.add(NoRadioButton);
         buttonGroup1.add(EnOcacionesRadioButton);
         inciarVicual();
+        
+        MessageDialog m = new MessageDialog(e.getTextoEncuesta(), "Informacion", Language.ES, this);
     }
 
     @Override
@@ -174,9 +176,9 @@ public class EncuestaBuilder extends AbstractFrame{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BackButton)
-                    .addComponent(NextButton))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(NextButton)
+                    .addComponent(BackButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 

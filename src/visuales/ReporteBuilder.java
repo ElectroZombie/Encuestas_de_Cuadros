@@ -42,6 +42,7 @@ public class ReporteBuilder extends AbstractFrame {
     private String conclusiones;
     private Vector<String> justificacionesRales = new Vector<>();
     private final int anno;
+    private String justificacionRemp = "";
 
     public ReporteBuilder(Departamento depratamento, Tupla<Tupla<Integer, Integer>, Tupla<Object[], Object[]>> informacionEncuestas, int anno) {
         initComponents();
@@ -51,6 +52,7 @@ public class ReporteBuilder extends AbstractFrame {
         this.anno = anno;
 
         llenarJustificaciones();
+        this.setLocationRelativeTo(null);
 
         Actualizar_tabla();
         conclusiones = jEditorPane1.getText();
@@ -60,13 +62,22 @@ public class ReporteBuilder extends AbstractFrame {
 
     @Override
     public void inputDialog_returnValue(Object returnValue, int selection) {
+        if (selection == 1) {
+            if (returnValue != null) {
 
-        if (returnValue != null) {
+                conclusiones = (String) returnValue;
 
-            conclusiones = (String) returnValue;
-
+            }
+        } else if (selection == 2) {
+            justificacionesT.add((String) returnValue);
+                Actualizar_tabla();
+        } else if (selection == 3) {
+              //corregir tambien en la base de datos
+                String temp = (String) returnValue;
+                justificacionesT.insertElementAt(temp, justificacionesT.indexOf(justificacionRemp));
+                Actualizar_tabla();
         }
-
+       
     }
 
     /**
@@ -91,6 +102,7 @@ public class ReporteBuilder extends AbstractFrame {
         departamentoLabel = new javax.swing.JLabel();
         departamentoTextoLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        JustificacionExtraButton = new javax.swing.JButton();
 
         jScrollPane2.setViewportView(jEditorPane1);
 
@@ -180,6 +192,13 @@ public class ReporteBuilder extends AbstractFrame {
             }
         });
 
+        JustificacionExtraButton.setText("Agregar Justificacion extra");
+        JustificacionExtraButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JustificacionExtraButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -190,7 +209,9 @@ public class ReporteBuilder extends AbstractFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(aceptar)
-                        .addGap(111, 111, 111)
+                        .addGap(27, 27, 27)
+                        .addComponent(JustificacionExtraButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cancelar))
@@ -213,7 +234,8 @@ public class ReporteBuilder extends AbstractFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(aceptar)
                     .addComponent(cancelar)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(JustificacionExtraButton))
                 .addGap(21, 21, 21))
         );
 
@@ -250,6 +272,10 @@ public class ReporteBuilder extends AbstractFrame {
         this.dispose();
     }//GEN-LAST:event_cancelarMouseClicked
 
+    private void JustificacionExtraButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JustificacionExtraButtonMouseClicked
+        InputDialog input = new InputDialog(2, "Escriba las conclusiones", "Conclusiones", conclusiones, AbstractFrame.Language.ES, this);
+    }//GEN-LAST:event_JustificacionExtraButtonMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -259,6 +285,7 @@ public class ReporteBuilder extends AbstractFrame {
     private javax.swing.JDialog Conclusion;
     private javax.swing.JLabel ConclusionLabel;
     private javax.swing.JButton ConlcusionButton;
+    private javax.swing.JButton JustificacionExtraButton;
     private javax.swing.JButton aceptar;
     private javax.swing.JButton cancelar;
     private javax.swing.JLabel departamentoLabel;
@@ -270,7 +297,7 @@ public class ReporteBuilder extends AbstractFrame {
     private javax.swing.JTable justificaciones;
     // End of variables declaration//GEN-END:variables
     private void Actualizar_tabla() {
-
+        check.clear();
         DefaultTableModel d = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -306,8 +333,8 @@ public class ReporteBuilder extends AbstractFrame {
                 int columna = justificaciones.columnAtPoint(e.getPoint());
 
                 if (fila > -1 && columna == 0) {
-                    
-                    MessageDialog message = new MessageDialog(justificacionesT.elementAt(fila), "Justificaciones", AbstractFrame.Language.ES, ReporteBuilder.this);
+                    justificacionRemp = justificacionesT.elementAt(fila);
+                    InputDialog input = new InputDialog(3, "Justificaciones", "Justificaiones", justificacionesT.elementAt(fila), AbstractFrame.Language.ES, ReporteBuilder.this);
 
                 }
 

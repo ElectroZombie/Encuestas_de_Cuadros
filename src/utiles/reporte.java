@@ -27,10 +27,10 @@ public class reporte {
      
         Document pdf = new Document();
 
-        String ruta = System.getProperty("user.home");
+          String ruta = System.getProperty("user.dir");
 
        
-        PdfWriter.getInstance(pdf, new FileOutputStream(ruta + System.getProperty("file.separator")  +d.getNombreDepartamento() + " - " + anno + ".pdf"));
+        PdfWriter.getInstance(pdf, new FileOutputStream(ruta + System.getProperty("file.separator") + d.getNombreDepartamento() + " - " + anno + ".pdf"));
         pdf.open();
         //poniendo el encabezado del pdf
         Paragraph encabezado = new Paragraph("Las Tunas " + LocalDate.now()+"\n\n");
@@ -71,11 +71,14 @@ public class reporte {
         //cargando la encuesta secuendaria
         for (int i = 0; i < informacionEncuestas.getElemento2().getElemento2().length; i++) {
         String pregunta= "";
-        pregunta = switch (i) {
-                case 6 -> preguntas.elementAt(15);
-                case 7 -> preguntas.elementAt(14);
-                default -> preguntas.elementAt(i);
-            };
+
+        if(pregunta == "6"){
+            preguntas.elementAt(15);
+        }else if(pregunta == "7"){
+            preguntas.elementAt(14);
+        }else{
+            preguntas.elementAt(i);
+            }
         Tupla t = (Tupla<Integer[],Vector<String>>)informacionEncuestas.getElemento2().getElemento2()[i];
         Paragraph preguntaP = new Paragraph(pregunta+"\n");
         preguntaP.setAlignment(Paragraph.ALIGN_LEFT);

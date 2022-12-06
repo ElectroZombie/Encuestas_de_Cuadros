@@ -30,6 +30,7 @@ public class Seleccion_de_departamento extends AbstractFrame {
         
         this.setLocationRelativeTo(null);
         this.admin = admin;
+        this.setLocationRelativeTo(null);
         
         this.departamentos = GestionBD.getDepartamentos();
         int cont = 0;
@@ -55,13 +56,6 @@ public class Seleccion_de_departamento extends AbstractFrame {
         
         encRealDelText.setText(GestionBD.getEncuestasRealizadasDep(DepartamentoComboBox.getSelectedIndex()+1)+"");
         
-    }
-
-    @Override
-    public void messageDialog_returnValue(int selection) {
-        EncuestaBuilder EB = new EncuestaBuilder(E, D, admin);
-        EB.setVisible(true);
-        dispose();
     }
 
     @Override
@@ -216,8 +210,11 @@ public class Seleccion_de_departamento extends AbstractFrame {
         
         int idE = GestionBD.getIdEncuestaDepartamento(D);
         E = GestionBD.getEncuesta(idE);
+        
+        EncuestaBuilder EB = new EncuestaBuilder(E, D, admin);
+        EB.setVisible(true);
+        dispose();
 
-        MessageDialog message = new MessageDialog(1, E.getTextoEncuesta(), "Informacion", Language.ES, this);
     }//GEN-LAST:event_AceptButtonMouseClicked
 
     private void DepartamentoComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_DepartamentoComboBoxPopupMenuWillBecomeInvisible

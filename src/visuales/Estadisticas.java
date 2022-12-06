@@ -368,15 +368,14 @@ public class Estadisticas extends AbstractFrame {
             
             
             int opt = GestionBD.verifyDatabase(direccion);
-            switch (opt) {
-                case 0 -> {
-                    MessageDialog messageDialog = new MessageDialog("Hay problemas en la base de datos a integrar", "Error", Language.ES, this);
-                }
-                case 1 -> {
-                    ConfirmDialog confirm = new ConfirmDialog(2, "Ya existe el departamento dado en la base de datos. Desea sobreescribir la informacion?", "Error", Language.ES, this);
-                }
-                case 2 -> {
-                    GestionBD.integrateDatabase(direccion);
+            
+            if(opt == 0){
+               MessageDialog messageDialog = new MessageDialog("Hay problemas en la base de datos a integrar", "Error", Language.ES, this);
+                
+            }else if (opt == 1){
+                ConfirmDialog confirm = new ConfirmDialog(2, "Ya existe el departamento dado en la base de datos. Desea sobreescribir la informacion?", "Error", Language.ES, this);
+            }else if (opt == 2){
+                GestionBD.integrateDatabase(direccion);
                     Vector<Integer> annosEncuesta = GestionBD.getAnnosEncuestas();
                     for (Integer anno : annosEncuesta) {
                         annos.addItem(anno+"");
@@ -384,11 +383,10 @@ public class Estadisticas extends AbstractFrame {
                     actualizarTablaEstadisticas(estadisticas);
                     
                     MessageDialog message = new MessageDialog("Se ha integrado la base de datos exitosamente", "Informacion", Language.ES, this);
-                }
-                default -> {
-                }
+            }
+            
             }
             
         }
     }
-}
+
