@@ -25,12 +25,16 @@ public class Seleccion_de_departamento extends AbstractFrame {
     private Departamento D;
     private final boolean admin;
     
-    public Seleccion_de_departamento(boolean admin){
+    public Seleccion_de_departamento(boolean admin, boolean encuestasH){
         initComponents();
         
         this.setLocationRelativeTo(null);
         this.admin = admin;
         this.setLocationRelativeTo(null);
+        
+        if(encuestasH){
+        MessageDialog message = new MessageDialog("Se han agregado las encuestas con exito", "Informacion", Language.ES, this);
+        }
         
         this.departamentos = GestionBD.getDepartamentos();
         int cont = 0;

@@ -35,7 +35,7 @@ public class Main extends AbstractFrame {
             dispose();
         }
         else{
-            Seleccion_de_departamento sld = new Seleccion_de_departamento(false);
+            Seleccion_de_departamento sld = new Seleccion_de_departamento(false, false);
             sld.setVisible(true);
             dispose();
         }

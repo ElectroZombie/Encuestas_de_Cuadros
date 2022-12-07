@@ -119,7 +119,7 @@ public class Login extends AbstractFrame {
             dispose();
             }
             else{
-            Seleccion_de_departamento sld = new Seleccion_de_departamento(true);
+            Seleccion_de_departamento sld = new Seleccion_de_departamento(true, false);
             sld.setVisible(true);
             this.dispose();
             }

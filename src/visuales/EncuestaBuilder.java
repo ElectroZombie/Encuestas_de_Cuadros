@@ -23,6 +23,7 @@ public class EncuestaBuilder extends AbstractFrame{
     private Encuesta principal;
     private boolean flag;
     private boolean admin;
+    private boolean openMain = true;
 
     public EncuestaBuilder(Encuesta e, Departamento d, boolean admin) {
         initComponents();
@@ -42,16 +43,6 @@ public class EncuestaBuilder extends AbstractFrame{
         
         MessageDialog m = new MessageDialog(e.getTextoEncuesta(), "Informacion", Language.ES, this);
     }
-
-    @Override
-    public void messageDialog_returnValue(int selection) {
-        
-                Seleccion_de_departamento SD = new Seleccion_de_departamento(admin);
-                SD.setVisible(true);
-                dispose();
-                
-    }
-    
     
     
 
@@ -240,24 +231,18 @@ public class EncuestaBuilder extends AbstractFrame{
             if (JustificacionEditorPane.isEditable()) {
                 e.getRespuestas().elementAt(preguntaIndex).setArgumentacion(JustificacionEditorPane.getText());
             }
-
-            PregutaEditorPane.setText(e.getPreguntas().elementAt(preguntaIndex).getPregunta());
-            JustificacionEditorPane.setEditable(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
-            JustificacionEditorPane.setEnabled(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
-
-            buttonGroup1.clearSelection();
-            JustificacionEditorPane.setText("");
+            
             preguntaIndex++;
-            numeroPregunta.setText((preguntaIndex + 1) + "/" + e.getPreguntas().size());
-
-            if (e.getPreguntas().size() == preguntaIndex) {
+            if (e.getPreguntas().size() <= preguntaIndex) {
             if (flag) {
                 
                 GestionBD.setEncuestaResuelta(principal, d);
                 GestionBD.setEncuestaResuelta(e, d);
                 
-                MessageDialog message = new MessageDialog(1, "Se han agregado las encuestas con exito", "Informacion", Language.ES, this);
-                
+                Seleccion_de_departamento SD = new Seleccion_de_departamento(admin, true);
+                SD.setVisible(true);
+                dispose();
+                                
             } else {
                 flag = true;
                 principal = e;
@@ -269,16 +254,27 @@ public class EncuestaBuilder extends AbstractFrame{
                 
                 MessageDialog message = new MessageDialog(e.getTextoEncuesta(), "Informacion", Language.ES, this);
             }
-        }
+            }
+            else{
+            PregutaEditorPane.setText(e.getPreguntas().elementAt(preguntaIndex).getPregunta());
+            JustificacionEditorPane.setEditable(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
+            JustificacionEditorPane.setEnabled(e.getPreguntas().elementAt(preguntaIndex).isArgumentacion());
+
+            buttonGroup1.clearSelection();
+            JustificacionEditorPane.setText("");
             
+            numeroPregunta.setText((preguntaIndex + 1) + "/" + e.getPreguntas().size());
+            }
         }
 
     }//GEN-LAST:event_NextButtonMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Seleccion_de_departamento SD = new Seleccion_de_departamento(admin);
+
+        Seleccion_de_departamento SD = new Seleccion_de_departamento(admin,false);
         SD.setVisible(true);
         dispose();
+       
     }//GEN-LAST:event_formWindowClosing
 
     /**
