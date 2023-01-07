@@ -7,7 +7,6 @@ package visuales;
 import com.itextpdf.text.DocumentException;
 import dialogs.AbstractFrame;
 import dialogs.InputDialog;
-import dialogs.MessageDialog;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,7 +21,6 @@ import modelos.Departamento;
 import modelos.Encuesta;
 import utiles.CheckBoxEditor;
 import utiles.ComponentRenderer;
-import dialogs.MessageDialog;
 import utiles.Tupla;
 import utiles.reporte;
 
@@ -35,12 +33,12 @@ public class ReporteBuilder extends AbstractFrame {
     /**
      * Creates new form ReporteBuilder
      */
-    private Vector<JCheckBox> check;
-    private Departamento departamento;
-    private Tupla<Tupla<Integer, Integer>, Tupla<Object[], Object[]>> informacionEncuestas;
-    private Vector<String> justificacionesT = new Vector<>();
+    private final Vector<JCheckBox> check;
+    private final Departamento departamento;
+    private final Tupla<Tupla<Integer, Integer>, Tupla<Object[], Object[]>> informacionEncuestas;
+    private final Vector<String> justificacionesT = new Vector<>();
     private String conclusiones;
-    private Vector<String> justificacionesRales = new Vector<>();
+    private final Vector<String> justificacionesRales = new Vector<>();
     private final int anno;
     private String justificacionRemp = "";
 
@@ -259,7 +257,7 @@ public class ReporteBuilder extends AbstractFrame {
         try {
             llenarJustificacionesReales();
             reporte.reporteBuild(departamento, true, anno, informacionEncuestas, Encuesta.getAllpreguntas(), justificacionesRales, conclusiones);
-            lectorDePDF lp = new lectorDePDF(System.getProperty("user.dir") + System.getProperty("file.separator") + departamento.getNombreDepartamento() + " - " + anno + ".pdf");
+            lectorDePDF lp = new lectorDePDF(System.getProperty("user.dir") + System.getProperty("file.separator") + /*departamento.getNombreDepartamento()*/"X" + " - " + anno + ".pdf");
             lp.setVisible(true);
         } catch (FileNotFoundException | DocumentException ex) {
             Logger.getLogger(ReporteBuilder.class.getName()).log(Level.SEVERE, null, ex);

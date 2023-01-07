@@ -130,7 +130,7 @@ public class Encuesta {
             String stat = "";
             ResultSet RS;
             
-            if(!this.nombreEncuesta.contains("(Secundaria)")){
+            if(!this.nombreEncuesta.contains("(Secundaria")){
             
             stat = "select * from trabajadores_x_departamento where ano_encuesta = " + LocalDate.now().getYear() + " and id_departamento = " + D.getIdDepartamento();
             RS = C.getConsulta().executeQuery(stat);
@@ -202,15 +202,29 @@ public class Encuesta {
         return annos;
     }
 
-    public Encuesta getEncuestaSec(){
+    public Encuesta getEncuestaSec(int idDepartamento){
         Conexion c= new Conexion();
         int id_encuesta = 0;
         try {
             c.conectar();
-            String stat ="select id_encuesta from encuesta where nombre_encuesta ='"+this.nombreEncuesta+" (Secundaria)'";
+            if(idDepartamento == 1){
+            String stat ="select id_encuesta from encuesta where nombre_encuesta ='"+this.nombreEncuesta+" (Secundaria Secretaría General)'";
             ResultSet rs = c.getConsulta().executeQuery(stat);
             id_encuesta= rs.getInt(1);
             c.desconectar();
+            }
+            else if(idDepartamento == 3){
+            String stat ="select id_encuesta from encuesta where nombre_encuesta ='"+this.nombreEncuesta+" (Secundaria Departamento de Marxismo-Leninismo Historia)'";
+            ResultSet rs = c.getConsulta().executeQuery(stat);
+            id_encuesta= rs.getInt(1);
+            c.desconectar();
+            }
+            else if(idDepartamento == 2){
+            String stat ="select id_encuesta from encuesta where nombre_encuesta ='"+this.nombreEncuesta+" (Secundaria Departamento de Cuadros)'";
+            ResultSet rs = c.getConsulta().executeQuery(stat);
+            id_encuesta= rs.getInt(1);
+            c.desconectar();
+            }
             
         } catch (SQLException e) {
         }
@@ -232,7 +246,7 @@ public class Encuesta {
               C.desconectar();
           } catch (SQLException e) {
           }
-          return cont/2;
+          return cont;
     }
 
     public static int getEncuestasRealizadas(int idD) {
@@ -249,9 +263,29 @@ public class Encuesta {
               }
               C.desconectar();
           } catch (SQLException e) {
-          }
-          return cont/2;
+          } 
+
+          return cont;
     }
+    
+    public String getPersonaObjetivo(){
+        String obj="";
+        try {
+            
+            Conexion C = new Conexion();
+
+            C.conectar();
+            String stat ="select persona_objetivo from encuesta where id_encuesta = "+idEncuesta;
+            ResultSet rs = C.getConsulta().executeQuery(stat);
+            obj=rs.getString(1);
+            C.desconectar();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Departamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return obj;
+    }
+    
     public static Vector<String> getAllpreguntas(){
         Vector<String> preguntas= new Vector<>();
         try {

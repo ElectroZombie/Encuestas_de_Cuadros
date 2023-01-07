@@ -74,25 +74,6 @@ public class Departamento {
         return idEncuesta;
     }
     
-    public String getPersonaObjetivo(){
-        String obj="";
-        int idEncuesta = getIdEncuestaDepartamento();
-        try {
-            
-            Conexion C = new Conexion();
-
-            C.conectar();
-            String stat ="select persona_objetivo from encuesta where id_encuesta = "+idEncuesta;
-            ResultSet rs = C.getConsulta().executeQuery(stat);
-            obj=rs.getString(1);
-            C.desconectar();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Departamento.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return obj;
-    }
-    
     public static Departamento getDepartamento(int idDepartamento) {
        Conexion C = new Conexion();
         try {
@@ -231,7 +212,7 @@ public class Departamento {
                   
                   Tupla T;
                   
-                  if(idEncuesta <= 4){
+                  if(idEncuesta <= 4 || idEncuesta == 9){
                       if(preguntas[idPregunta]==null){
                           T = new Tupla<Integer[], Vector<String>>(new Integer[3], new Vector<>());
                           Integer[] I = (Integer[])T.getElemento1();

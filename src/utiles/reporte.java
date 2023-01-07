@@ -5,6 +5,7 @@
 package utiles;
 
 
+import base_de_datos.GestionBD;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.List;
@@ -30,7 +31,7 @@ public class reporte {
           String ruta = System.getProperty("user.dir");
 
        
-        PdfWriter.getInstance(pdf, new FileOutputStream(ruta + System.getProperty("file.separator") + d.getNombreDepartamento() + " - " + anno + ".pdf"));
+        PdfWriter.getInstance(pdf, new FileOutputStream(ruta + System.getProperty("file.separator") + /*d.getNombreDepartamento()*/"X" + " - " + anno + ".pdf"));
         pdf.open();
         //poniendo el encabezado del pdf
         Paragraph encabezado = new Paragraph("Las Tunas " + LocalDate.now()+"\n\n");
@@ -47,9 +48,9 @@ public class reporte {
         Paragraph muestra = new Paragraph("Muestra total: "+informacionEncuestas.getElemento1().getElemento2()+", para un "+porcientoDeAsistencia);
         muestra.setAlignment(Paragraph.ALIGN_LEFT);
         pdf.add(muestra);
-        //Paragraph personaOBJ = new Paragraph("Con relación al trabajo de "+d.getPersonaObjetivo()+"\n");
-        //personaOBJ.setAlignment(Paragraph.ALIGN_LEFT);
-        //pdf.add(personaOBJ);
+        Paragraph personaOBJ = new Paragraph("Con relación al trabajo del "+GestionBD.getEncuesta(GestionBD.getIdEncuestaDepartamento(d)).getPersonaObjetivo()+"\n");
+        personaOBJ.setAlignment(Paragraph.ALIGN_LEFT);
+        pdf.add(personaOBJ);
         for (int i = 0; i < informacionEncuestas.getElemento2().getElemento1().length; i++) {
         String pregunta= preguntas.elementAt(i);
         Tupla t = (Tupla<Integer[],Vector<String>>)informacionEncuestas.getElemento2().getElemento1()[i];
@@ -68,9 +69,16 @@ public class reporte {
         Paragraph salto = new Paragraph("\n");
         pdf.add(salto);
         }
-        //cargando la encuesta secuendaria
+        if(d.getIdDepartamento()<=3){
+            
+        Paragraph personaOBJ2 = new Paragraph("Con relación al trabajo del "+GestionBD.getEncuestaSecundaria(GestionBD.getEncuesta(GestionBD.getIdEncuestaDepartamento(d)), d.getIdDepartamento()).getPersonaObjetivo()+"\n");
+        personaOBJ2.setAlignment(Paragraph.ALIGN_LEFT);
+        pdf.add(personaOBJ2);
+        
+            
+        //cargando la encuesta secundaria
         for (int i = 0; i < informacionEncuestas.getElemento2().getElemento2().length; i++) {
-        String pregunta= "";
+        String pregunta= preguntas.elementAt(i);
 
         if(pregunta == "6"){
             preguntas.elementAt(15);
@@ -94,6 +102,7 @@ public class reporte {
         pdf.add(lista);
         Paragraph salto = new Paragraph("\n");
         pdf.add(salto);
+        }
         }
         Paragraph justificacion = new Paragraph("Hay criterios que se concentran en el departamento relacionados con:\n");
         justificacion.setAlignment(Paragraph.ALIGN_JUSTIFIED);

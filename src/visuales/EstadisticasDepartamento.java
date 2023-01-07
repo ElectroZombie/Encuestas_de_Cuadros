@@ -232,6 +232,7 @@ public class EstadisticasDepartamento extends AbstractFrame {
         }
         JCheckBox check = new JCheckBox();
         check.setEnabled(false);
+        if(T.getElemento2()[0]!=null){
         Object[] O = {"Encuesta secundaria", "", "", "", "", "", "", check};
         d.addRow(O);
         
@@ -249,8 +250,8 @@ public class EstadisticasDepartamento extends AbstractFrame {
             OBJ[6] = (Double)(I[2]*100.0)/totalP;
             JCheckBox JC = new JCheckBox();
             OBJ[7] = JC;
-            
             d.addRow(OBJ);
+        }
         }
         
         tablaPreguntas = new JTable(d);

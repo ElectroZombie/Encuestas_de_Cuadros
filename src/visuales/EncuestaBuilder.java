@@ -244,15 +244,25 @@ public class EncuestaBuilder extends AbstractFrame{
                 dispose();
                                 
             } else {
+                if(d.getIdDepartamento()==1 || d.getIdDepartamento()==2 || d.getIdDepartamento()==3){
                 flag = true;
                 principal = e;
-                e = GestionBD.getEncuestaSecundaria(principal);
+                e = GestionBD.getEncuestaSecundaria(principal, d.getIdDepartamento());
                 preguntaIndex = 0;
                 inciarVicual();
                 buttonGroup1.clearSelection();
                 JustificacionEditorPane.setText("");
                 
-                MessageDialog message = new MessageDialog(e.getTextoEncuesta(), "Informacion", Language.ES, this);
+                MessageDialog message = new MessageDialog(e.getObjEncuesta(), "Informacion", Language.ES, this);
+            }
+                else{
+
+                    GestionBD.setEncuestaResuelta(e, d);
+                
+                Seleccion_de_departamento SD = new Seleccion_de_departamento(admin, true);
+                SD.setVisible(true);
+                dispose();
+                }
             }
             }
             else{

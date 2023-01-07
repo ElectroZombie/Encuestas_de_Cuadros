@@ -60,8 +60,8 @@ public class GestionBD {
         Departamento.actualizarTotalTrabajadores(departamento, anno, nuevoTotal);
     }
 
-    public static Encuesta getEncuestaSecundaria(Encuesta e){
-        return e.getEncuestaSec();
+    public static Encuesta getEncuestaSecundaria(Encuesta e, int idDepartamento){
+        return e.getEncuestaSec(idDepartamento);
 
     }
     
