@@ -1,4 +1,4 @@
-# elecciones_ult
+# Encuestas de cuadros
 
 Software para efectuar y contabilizar encuestas referentes a la capacidad de los cuadros en la Universidad de Las Tunas
 
